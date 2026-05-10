@@ -188,6 +188,11 @@ app.use("/api/supplier", supplierRouter);
 
 // Test API
 app.get("/", (req, res) => res.send("API Working"));
+app.get("/health", (req, res) => res.json({ 
+  status: "up", 
+  database: mongoose.connection.readyState === 1 ? "connected" : "disconnected",
+  timestamp: new Date() 
+}));
 
 // 404 Handler - Must be after all other routes
 app.use((req, res) => {
