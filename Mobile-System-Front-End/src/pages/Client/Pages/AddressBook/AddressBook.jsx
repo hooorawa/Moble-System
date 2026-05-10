@@ -26,7 +26,7 @@ const AddressBook = () => {
     try {
       setLoading(true);
       
-      const response = await fetch(API_BASE_URL + 'api') + 'address/', {
+      const response = await fetch(API_BASE_URL + '/address/', {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json'
@@ -82,12 +82,11 @@ const AddressBook = () => {
     try {
       setLoading(true);
       
-      // Remove hardcoded customer ID - let backend handle authentication
       const addressData = {
         ...formData
       };
       
-      let url = API_BASE_URL + 'api') + 'address/add';
+      let url = API_BASE_URL + '/address/add';
       let method = 'POST';
       
       // If editing, use update endpoint

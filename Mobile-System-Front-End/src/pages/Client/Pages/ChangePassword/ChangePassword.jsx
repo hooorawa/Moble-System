@@ -89,7 +89,7 @@ const ChangePassword = () => {
 
     try {
       const response = await axios.post(
-        API_BASE_URL + 'api') + 'customer/change-password',
+        API_BASE_URL + '/customer/change-password',
         {
           currentPassword: formData.currentPassword,
           newPassword: formData.newPassword

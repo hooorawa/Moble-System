@@ -91,7 +91,7 @@ const EditProfile = () => {
       }
 
       const response = await axios.post(
-        API_BASE_URL + 'api') + 'customer/update-profile',
+        API_BASE_URL + '/customer/update-profile',
         formDataToSend,
         {
           headers: {
@@ -195,20 +195,6 @@ const EditProfile = () => {
                 placeholder="Enter your full name"
               />
             </div>
-{/* 
-            <div className="form-group">
-              <label htmlFor="email">Email Address</label>
-              <input
-                type="email"
-                id="email"
-                name="email"
-                value={localStorage.getItem('email') || ''}
-                disabled
-                className="form-input disabled"
-                placeholder="Email address (cannot be changed)"
-              />
-              <p className="field-note">Email address cannot be changed</p>
-            </div> */}
           </div>
 
           {/* Messages */}

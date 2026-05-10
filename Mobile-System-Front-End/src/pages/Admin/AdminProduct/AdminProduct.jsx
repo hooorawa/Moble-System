@@ -435,7 +435,7 @@ const AdminProduct = () => {
         brand: formData.brand
       });
       
-      const response = await fetch('${API_BASE_URL}/product/', {
+      const response = await fetch(`${API_BASE_URL}/product/`, {
         method: 'POST',
         body: formDataToSend
       });

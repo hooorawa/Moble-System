@@ -61,7 +61,7 @@ const AdminDashboard = () => {
   // Separate function for async token verification (non-blocking)
   const verifyTokenWithServer = async (adminData) => {
     try {
-      const response = await fetch('${API_BASE_URL}/admin/profile', {
+      const response = await fetch(`${API_BASE_URL}/admin/profile`, {
         method: 'GET',
         credentials: 'include',
         headers: {

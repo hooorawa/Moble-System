@@ -152,7 +152,7 @@ const AdminBrand = () => {
       setLoading(true);
       setErrorMessage(''); // Clear any previous error
       
-      const response = await fetch('${API_BASE_URL}/brand/add', {
+      const response = await fetch(`${API_BASE_URL}/brand/add`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -334,7 +334,7 @@ const AdminBrand = () => {
 
     try {
       setLoading(true);
-      const response = await fetch('${API_BASE_URL}/brand/add-category', {
+      const response = await fetch(`${API_BASE_URL}/brand/add-category`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -375,7 +375,7 @@ const AdminBrand = () => {
 
     try {
       setLoading(true);
-      const response = await fetch('${API_BASE_URL}/brand/remove-category', {
+      const response = await fetch(`${API_BASE_URL}/brand/remove-category`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
