@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import ApiService from '../../services/api';
 import CartIcon from '../CartIcon/CartIcon';
 import SearchBar from '../SearchBar/SearchBar';
-import './navbar.css';
+import './Navbar.css';
 import user_icon from '../../Assets/user.png';
 import logo from '../../pages/Client/Assets/Logo.png';
 import bell_icon from '../../Assets/bell.png';
