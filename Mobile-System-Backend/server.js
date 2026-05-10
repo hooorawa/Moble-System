@@ -40,10 +40,28 @@ app.use(express.urlencoded({ limit: '50mb', extended: true }));
 // CORS Configuration
 const corsOrigins = process.env.FRONTEND_URLS 
   ? process.env.FRONTEND_URLS.split(',').map(url => url.trim())
-  : ["http://localhost:5173", "http://localhost:5174"];
+  : ["http://localhost:5173", "http://localhost:5174", "https://*.netlify.app"];
 
 app.use(cors({
-  origin: corsOrigins,
+  origin: function (origin, callback) {
+    // Allow requests with no origin (like mobile apps or curl requests)
+    if (!origin) return callback(null, true);
+    
+    const isAllowed = corsOrigins.some(allowedOrigin => {
+      if (allowedOrigin.includes('*')) {
+        const regex = new RegExp('^' + allowedOrigin.replace(/\./g, '\\.').replace(/\*/g, '.*') + '$');
+        return regex.test(origin);
+      }
+      return allowedOrigin === origin;
+    });
+
+    if (isAllowed || process.env.NODE_ENV !== 'production') {
+      callback(null, true);
+    } else {
+      console.warn(`CORS blocked for origin: ${origin}`);
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
   credentials: true
 }));
 
