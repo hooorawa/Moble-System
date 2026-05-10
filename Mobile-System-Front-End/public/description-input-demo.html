@@ -1,0 +1,717 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Description Input Component - Vanilla JS Demo</title>
+    <style>
+        /* Reset and Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            min-height: 100vh;
+            padding: 40px 20px;
+            color: #111827;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: #ffffff;
+            border-radius: 16px;
+            padding: 40px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            border: 1px solid #e5e7eb;
+        }
+
+        h1 {
+            font-size: 32px;
+            font-weight: 700;
+            color: #111827;
+            margin-bottom: 16px;
+            text-align: center;
+            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .description {
+            font-size: 16px;
+            color: #6b7280;
+            line-height: 1.6;
+            margin-bottom: 32px;
+            text-align: center;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* Description Input Component Styles */
+        .description-input-container {
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto 32px;
+        }
+
+        .description-label {
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 8px;
+            line-height: 1.4;
+        }
+
+        .description-input-wrapper {
+            position: relative;
+            margin-bottom: 12px;
+        }
+
+        .description-input {
+            width: 100%;
+            height: 44px;
+            padding: 12px 16px;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            font-size: 14px;
+            font-family: inherit;
+            background: #ffffff;
+            color: #111827;
+            transition: all 0.2s ease;
+        }
+
+        .description-input:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+
+        .description-input::placeholder {
+            color: #9ca3af;
+            font-style: italic;
+        }
+
+        .description-lines {
+            margin-bottom: 16px;
+            max-height: 300px;
+            overflow-y: auto;
+            border-radius: 8px;
+            background: #f9fafb;
+            border: 1px solid #e5e7eb;
+            padding: 8px;
+        }
+
+        .description-line {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 8px 12px;
+            margin-bottom: 4px;
+            background: #ffffff;
+            border: 1px solid #e5e7eb;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+            animation: slideIn 0.3s ease-out;
+        }
+
+        .description-line:last-child {
+            margin-bottom: 0;
+        }
+
+        .description-line:hover {
+            border-color: #d1d5db;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+        }
+
+        .line-text {
+            flex: 1;
+            font-size: 14px;
+            color: #374151;
+            line-height: 1.4;
+            word-wrap: break-word;
+            margin-right: 8px;
+        }
+
+        .line-delete-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 24px;
+            height: 24px;
+            border: none;
+            border-radius: 4px;
+            background: transparent;
+            color: #9ca3af;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            flex-shrink: 0;
+        }
+
+        .line-delete-btn:hover {
+            background: #fef2f2;
+            color: #ef4444;
+            transform: scale(1.1);
+        }
+
+        .line-delete-btn:focus {
+            outline: 2px solid #3b82f6;
+            outline-offset: 2px;
+        }
+
+        .line-delete-btn:active {
+            transform: scale(0.95);
+        }
+
+        .description-actions {
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 12px;
+        }
+
+        .clear-all-btn {
+            padding: 6px 12px;
+            border: 1px solid #e5e7eb;
+            border-radius: 6px;
+            background: #ffffff;
+            color: #6b7280;
+            font-size: 12px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .clear-all-btn:hover {
+            background: #fef2f2;
+            border-color: #fecaca;
+            color: #dc2626;
+        }
+
+        .clear-all-btn:focus {
+            outline: 2px solid #3b82f6;
+            outline-offset: 2px;
+        }
+
+        .clear-all-btn:active {
+            transform: translateY(1px);
+        }
+
+        .description-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 12px;
+            color: #6b7280;
+            margin-top: 8px;
+        }
+
+        .line-count {
+            font-weight: 500;
+        }
+
+        .input-hint {
+            font-style: italic;
+        }
+
+        /* Animations */
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-8px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Scrollbar Styling */
+        .description-lines::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .description-lines::-webkit-scrollbar-track {
+            background: #f1f5f9;
+            border-radius: 3px;
+        }
+
+        .description-lines::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 3px;
+        }
+
+        .description-lines::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+
+        /* Demo Actions */
+        .demo-actions {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 32px;
+        }
+
+        .submit-btn {
+            padding: 12px 24px;
+            background: linear-gradient(135deg, #3b82f6, #2563eb);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            min-width: 180px;
+        }
+
+        .submit-btn:hover:not(:disabled) {
+            background: linear-gradient(135deg, #2563eb, #1d4ed8);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+        }
+
+        .submit-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .reset-btn {
+            padding: 12px 24px;
+            background: #ffffff;
+            color: #6b7280;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            min-width: 120px;
+        }
+
+        .reset-btn:hover {
+            background: #f9fafb;
+            border-color: #d1d5db;
+            color: #374151;
+        }
+
+        .preview-section {
+            background: #f9fafb;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 24px;
+            margin-top: 32px;
+        }
+
+        .preview-section h3 {
+            font-size: 18px;
+            font-weight: 600;
+            color: #111827;
+            margin-bottom: 16px;
+        }
+
+        .preview-content {
+            background: #ffffff;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 16px;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        .preview-line {
+            padding: 8px 0;
+            font-size: 14px;
+            color: #374151;
+            border-bottom: 1px solid #f3f4f6;
+            line-height: 1.5;
+        }
+
+        .preview-line:last-child {
+            border-bottom: none;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            body {
+                padding: 20px 16px;
+            }
+            
+            .container {
+                padding: 24px;
+                border-radius: 12px;
+            }
+            
+            h1 {
+                font-size: 24px;
+            }
+            
+            .description {
+                font-size: 14px;
+            }
+            
+            .demo-actions {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .submit-btn,
+            .reset-btn {
+                width: 100%;
+                max-width: 300px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 16px;
+            }
+            
+            h1 {
+                font-size: 20px;
+            }
+            
+            .preview-section {
+                padding: 16px;
+            }
+        }
+
+        /* Dark Mode Support */
+        @media (prefers-color-scheme: dark) {
+            body {
+                background: linear-gradient(135deg, #1f2937 0%, #111827 100%);
+            }
+            
+            .container {
+                background: #1f2937;
+                border-color: #374151;
+            }
+            
+            h1 {
+                color: #f9fafb;
+            }
+            
+            .description {
+                color: #9ca3af;
+            }
+            
+            .description-label {
+                color: #f9fafb;
+            }
+            
+            .description-input {
+                background: #1f2937;
+                border-color: #374151;
+                color: #f9fafb;
+            }
+            
+            .description-input:focus {
+                border-color: #3b82f6;
+                box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+            }
+            
+            .description-input::placeholder {
+                color: #6b7280;
+            }
+            
+            .description-lines {
+                background: #1f2937;
+                border-color: #374151;
+            }
+            
+            .description-line {
+                background: #111827;
+                border-color: #374151;
+            }
+            
+            .description-line:hover {
+                border-color: #4b5563;
+            }
+            
+            .line-text {
+                color: #f9fafb;
+            }
+            
+            .clear-all-btn {
+                background: #1f2937;
+                border-color: #374151;
+                color: #9ca3af;
+            }
+            
+            .clear-all-btn:hover {
+                background: #2d1b1b;
+                border-color: #7f1d1d;
+                color: #fca5a5;
+            }
+            
+            .description-info {
+                color: #9ca3af;
+            }
+            
+            .reset-btn {
+                background: #1f2937;
+                border-color: #374151;
+                color: #9ca3af;
+            }
+            
+            .reset-btn:hover {
+                background: #374151;
+                border-color: #4b5563;
+                color: #d1d5db;
+            }
+            
+            .preview-section {
+                background: #111827;
+                border-color: #374151;
+            }
+            
+            .preview-section h3 {
+                color: #f9fafb;
+            }
+            
+            .preview-content {
+                background: #1f2937;
+                border-color: #374151;
+            }
+            
+            .preview-line {
+                color: #d1d5db;
+                border-color: #374151;
+            }
+        }
+
+        /* Accessibility Improvements */
+        @media (prefers-reduced-motion: reduce) {
+            .description-line,
+            .line-delete-btn,
+            .clear-all-btn {
+                transition: none;
+            }
+            
+            @keyframes slideIn {
+                from, to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+        }
+
+        /* High Contrast Mode */
+        @media (prefers-contrast: high) {
+            .description-input {
+                border-width: 2px;
+            }
+            
+            .description-line {
+                border-width: 2px;
+            }
+            
+            .line-delete-btn:focus,
+            .clear-all-btn:focus {
+                outline-width: 3px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Description Input Component</h1>
+        <p class="description">
+            This is a clean, interactive description input component built with vanilla HTML, CSS, and JavaScript. 
+            Type your text and press Enter to create new lines. Each line will appear below as a separate, 
+            styled block with a delete button.
+        </p>
+
+        <div class="description-input-container">
+            <label class="description-label" for="descriptionInput">Description</label>
+            
+            <div class="description-input-wrapper">
+                <input
+                    type="text"
+                    id="descriptionInput"
+                    class="description-input"
+                    placeholder="Type your description here and press Enter..."
+                    maxlength="200"
+                    aria-label="Add description line"
+                />
+            </div>
+
+            <div id="descriptionLines" class="description-lines" style="display: none;">
+                <!-- Lines will be dynamically added here -->
+            </div>
+
+            <div id="descriptionActions" class="description-actions" style="display: none;">
+                <button type="button" id="clearAllBtn" class="clear-all-btn" aria-label="Clear all description lines">
+                    Clear All (0)
+                </button>
+            </div>
+
+            <div class="description-info">
+                <span id="lineCount" class="line-count">0 / 50 lines</span>
+                <span class="input-hint">Press Enter to add line</span>
+            </div>
+        </div>
+
+        <div class="demo-actions">
+            <button type="button" id="submitBtn" class="submit-btn" disabled>
+                Submit Description (0 lines)
+            </button>
+            <button type="button" id="resetBtn" class="reset-btn">
+                Reset
+            </button>
+        </div>
+
+        <div id="previewSection" class="preview-section" style="display: none;">
+            <h3>Preview (as it would appear in your app):</h3>
+            <div id="previewContent" class="preview-content">
+                <!-- Preview lines will be dynamically added here -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        class DescriptionInput {
+            constructor() {
+                this.input = document.getElementById('descriptionInput');
+                this.linesContainer = document.getElementById('descriptionLines');
+                this.actionsContainer = document.getElementById('descriptionActions');
+                this.clearAllBtn = document.getElementById('clearAllBtn');
+                this.lineCount = document.getElementById('lineCount');
+                this.submitBtn = document.getElementById('submitBtn');
+                this.resetBtn = document.getElementById('resetBtn');
+                this.previewSection = document.getElementById('previewSection');
+                this.previewContent = document.getElementById('previewContent');
+                
+                this.lines = [];
+                this.maxLines = 50;
+                
+                this.init();
+            }
+
+            init() {
+                // Event listeners
+                this.input.addEventListener('keypress', (e) => this.handleKeyPress(e));
+                this.clearAllBtn.addEventListener('click', () => this.clearAll());
+                this.submitBtn.addEventListener('click', () => this.handleSubmit());
+                this.resetBtn.addEventListener('click', () => this.reset());
+                
+                // Focus management
+                this.input.focus();
+            }
+
+            handleKeyPress(e) {
+                if (e.key === 'Enter' && this.input.value.trim()) {
+                    e.preventDefault();
+                    this.addLine(this.input.value.trim());
+                }
+            }
+
+            addLine(text) {
+                if (this.lines.length >= this.maxLines) {
+                    alert(`Maximum ${this.maxLines} lines allowed`);
+                    return;
+                }
+
+                this.lines.push(text);
+                this.input.value = '';
+                this.render();
+                this.updatePreview();
+            }
+
+            removeLine(index) {
+                this.lines.splice(index, 1);
+                this.render();
+                this.updatePreview();
+            }
+
+            clearAll() {
+                this.lines = [];
+                this.render();
+                this.updatePreview();
+                this.input.focus();
+            }
+
+            reset() {
+                this.lines = [];
+                this.input.value = '';
+                this.render();
+                this.updatePreview();
+                this.input.focus();
+            }
+
+            handleSubmit() {
+                console.log('Final description:', this.lines);
+                alert(`Description submitted with ${this.lines.length} lines:\n\n${this.lines.join('\n')}`);
+            }
+
+            render() {
+                // Update line count
+                this.lineCount.textContent = `${this.lines.length} / ${this.maxLines} lines`;
+                
+                // Show/hide containers
+                if (this.lines.length > 0) {
+                    this.linesContainer.style.display = 'block';
+                    this.actionsContainer.style.display = 'flex';
+                    this.previewSection.style.display = 'block';
+                } else {
+                    this.linesContainer.style.display = 'none';
+                    this.actionsContainer.style.display = 'none';
+                    this.previewSection.style.display = 'none';
+                }
+
+                // Update clear all button
+                this.clearAllBtn.textContent = `Clear All (${this.lines.length})`;
+                
+                // Update submit button
+                this.submitBtn.textContent = `Submit Description (${this.lines.length} lines)`;
+                this.submitBtn.disabled = this.lines.length === 0;
+
+                // Render lines
+                this.linesContainer.innerHTML = this.lines.map((line, index) => `
+                    <div class="description-line">
+                        <span class="line-text">${this.escapeHtml(line)}</span>
+                        <button 
+                            type="button" 
+                            class="line-delete-btn" 
+                            aria-label="Remove line: ${this.escapeHtml(line)}" 
+                            title="Remove this line"
+                            onclick="descriptionInput.removeLine(${index})"
+                        >
+                            <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+                                <path d="M9 3L3 9M3 3L9 9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </button>
+                    </div>
+                `).join('');
+            }
+
+            updatePreview() {
+                this.previewContent.innerHTML = this.lines.map(line => 
+                    `<div class="preview-line">${this.escapeHtml(line)}</div>`
+                ).join('');
+            }
+
+            escapeHtml(text) {
+                const div = document.createElement('div');
+                div.textContent = text;
+                return div.innerHTML;
+            }
+        }
+
+        // Initialize the component when the page loads
+        let descriptionInput;
+        document.addEventListener('DOMContentLoaded', () => {
+            descriptionInput = new DescriptionInput();
+        });
+    </script>
+</body>
+</html>

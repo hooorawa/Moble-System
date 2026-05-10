@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Bar Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .test-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .search-demo {
+            margin: 20px 0;
+            padding: 20px;
+            border: 2px dashed #ddd;
+            border-radius: 8px;
+            text-align: center;
+        }
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+        .feature {
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 6px;
+            border-left: 4px solid #007bff;
+        }
+        .responsive-demo {
+            margin: 20px 0;
+            padding: 20px;
+            background: #e3f2fd;
+            border-radius: 8px;
+        }
+        .size-demo {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin: 15px 0;
+        }
+        .size-demo > div {
+            padding: 10px;
+            background: white;
+            border-radius: 6px;
+            border: 1px solid #ddd;
+        }
+        .size-label {
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h1>🔍 Modern Search Bar Implementation</h1>
+        
+        <div class="search-demo">
+            <h2>Search Bar Component Features</h2>
+            <p>✅ Oval-shaped input field with modern styling</p>
+            <p>✅ Blue circular search button with magnifying glass icon</p>
+            <p>✅ Smooth animations and hover effects</p>
+            <p>✅ Responsive design for all screen sizes</p>
+            <p>✅ Integrated into navbar between logo and navigation</p>
+        </div>
+
+        <div class="features">
+            <div class="feature">
+                <h3>🎨 Design Features</h3>
+                <ul>
+                    <li>Light gray oval input field</li>
+                    <li>Bright blue search button</li>
+                    <li>White magnifying glass icon</li>
+                    <li>Smooth transitions and hover effects</li>
+                    <li>Focus glow animation</li>
+                </ul>
+            </div>
+            
+            <div class="feature">
+                <h3>📱 Responsive Design</h3>
+                <ul>
+                    <li>Desktop: 400px max width</li>
+                    <li>Tablet: 300px max width</li>
+                    <li>Mobile: 250px max width</li>
+                    <li>Hidden on mobile navbar</li>
+                    <li>Shown in mobile menu</li>
+                </ul>
+            </div>
+            
+            <div class="feature">
+                <h3>⚡ Functionality</h3>
+                <ul>
+                    <li>Form submission handling</li>
+                    <li>Search term validation</li>
+                    <li>Navigation to search results</li>
+                    <li>Keyboard accessibility</li>
+                    <li>Clean state management</li>
+                </ul>
+            </div>
+            
+            <div class="feature">
+                <h3>♿ Accessibility</h3>
+                <ul>
+                    <li>Proper form semantics</li>
+                    <li>Keyboard navigation support</li>
+                    <li>Screen reader friendly</li>
+                    <li>High contrast mode support</li>
+                    <li>Reduced motion support</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="responsive-demo">
+            <h3>📐 Responsive Size Examples</h3>
+            <div class="size-demo">
+                <div>
+                    <div class="size-label">Desktop (1024px+):</div>
+                    <div style="width: 400px; height: 40px; background: #f8f9fa; border-radius: 25px; border: 2px solid #007bff; display: flex; align-items: center; padding: 2px;">
+                        <input type="text" placeholder="Search products..." style="flex: 1; border: none; background: transparent; padding: 0 16px; outline: none;">
+                        <button style="width: 36px; height: 36px; background: #007bff; border: none; border-radius: 50%; color: white; margin-right: 2px;">🔍</button>
+                    </div>
+                </div>
+                
+                <div>
+                    <div class="size-label">Tablet (768px-1023px):</div>
+                    <div style="width: 300px; height: 36px; background: #f8f9fa; border-radius: 23px; border: 2px solid #007bff; display: flex; align-items: center; padding: 2px;">
+                        <input type="text" placeholder="Search products..." style="flex: 1; border: none; background: transparent; padding: 0 14px; outline: none; font-size: 13px;">
+                        <button style="width: 32px; height: 32px; background: #007bff; border: none; border-radius: 50%; color: white; margin-right: 2px; font-size: 12px;">🔍</button>
+                    </div>
+                </div>
+                
+                <div>
+                    <div class="size-label">Mobile (480px-767px):</div>
+                    <div style="width: 250px; height: 32px; background: #f8f9fa; border-radius: 21px; border: 2px solid #007bff; display: flex; align-items: center; padding: 2px;">
+                        <input type="text" placeholder="Search products..." style="flex: 1; border: none; background: transparent; padding: 0 12px; outline: none; font-size: 12px;">
+                        <button style="width: 28px; height: 28px; background: #007bff; border: none; border-radius: 50%; color: white; margin-right: 2px; font-size: 10px;">🔍</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div style="margin-top: 30px; padding: 20px; background: #e8f5e8; border-radius: 8px; border-left: 4px solid #28a745;">
+            <h3>✅ Implementation Complete</h3>
+            <p><strong>Files Created/Modified:</strong></p>
+            <ul>
+                <li><code>src/Components/SearchBar/SearchBar.jsx</code> - React component</li>
+                <li><code>src/Components/SearchBar/SearchBar.css</code> - Unique styling</li>
+                <li><code>src/Components/Navbar/Navbar.jsx</code> - Integration</li>
+                <li><code>src/Components/Navbar/Navbar.css</code> - Layout updates</li>
+            </ul>
+            <p><strong>Features Implemented:</strong></p>
+            <ul>
+                <li>Modern oval search bar design matching the provided image</li>
+                <li>Blue circular search button with magnifying glass icon</li>
+                <li>Responsive design that works on all screen sizes</li>
+                <li>Integration into navbar without affecting other page styles</li>
+                <li>Mobile-friendly implementation with search in mobile menu</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

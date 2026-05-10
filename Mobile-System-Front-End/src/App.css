@@ -1,0 +1,15 @@
+/* Blur effect for background when login modal is open */
+.blur-background {
+  filter: blur(3px);
+  transition: filter 0.3s ease;
+}
+
+/* Ensure smooth transition when modal opens/closes */
+.app {
+  transition: filter 0.3s ease;
+}
+
+/* Prevent body scroll when modal is open */
+body.modal-open {
+  overflow: hidden;
+}

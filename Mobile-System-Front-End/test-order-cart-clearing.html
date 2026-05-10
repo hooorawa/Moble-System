@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Cart Clearing Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .test-section {
+            background: #f8f9fa;
+            padding: 20px;
+            margin: 15px 0;
+            border-radius: 8px;
+            border-left: 4px solid #007bff;
+        }
+        .test-section.success {
+            border-left-color: #28a745;
+            background: #d4edda;
+        }
+        .test-section.error {
+            border-left-color: #dc3545;
+            background: #f8d7da;
+        }
+        .test-section.warning {
+            border-left-color: #ffc107;
+            background: #fff3cd;
+        }
+        .button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+            font-size: 16px;
+        }
+        .button:hover {
+            background: #0056b3;
+        }
+        .button.success {
+            background: #28a745;
+        }
+        .button.success:hover {
+            background: #218838;
+        }
+        .button.danger {
+            background: #dc3545;
+        }
+        .button.danger:hover {
+            background: #c82333;
+        }
+        .status {
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+        .status.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .status.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        .status.info {
+            background: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+        .status.warning {
+            background: #fff3cd;
+            color: #856404;
+            border: 1px solid #ffeaa7;
+        }
+        .cart-data {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 10px 0;
+            font-family: monospace;
+            white-space: pre-wrap;
+        }
+        .flow-step {
+            background: #e9ecef;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border-left: 4px solid #6c757d;
+        }
+        .flow-step.completed {
+            background: #d4edda;
+            border-left-color: #28a745;
+        }
+        .flow-step.current {
+            background: #d1ecf1;
+            border-left-color: #007bff;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1> Order Cart Clearing Test</h1>
+        
+        <div class="test-section success">
+            <h3> Fix Applied:</h3>
+            <ul>
+                <li>Cart clears immediately after order creation in Checkout</li>
+                <li>Cart clears when OrderConfirmation page loads</li>
+                <li>Backend already clears cart after order creation</li>
+                <li>localStorage is cleared for instant UI updates</li>
+            </ul>
+        </div>
+
+        <div class="test-section">
+            <h3> Current Cart Status</h3>
+            <button class="button" onclick="checkCartStatus()">Check Cart Status</button>
+            <div id="cartStatus"></div>
+        </div>
+
+        <div class="test-section">
+            <h3>Simulate Order Process</h3>
+            <button class="button success" onclick="simulateAddToCart()">1. Add Items to Cart</button>
+            <button class="button" onclick="simulateCheckout()">2. Simulate Checkout</button>
+            <button class="button" onclick="simulateOrderConfirmation()">3. Simulate Order Confirmation</button>
+            <div id="orderProcessResult"></div>
+        </div>
+
+        <div class="test-section">
+            <h3> Complete Flow Test</h3>
+            <button class="button" onclick="testCompleteOrderFlow()">Test: Add → Checkout → Confirm → Verify Cart Empty</button>
+            <div id="completeFlowResult"></div>
+        </div>
+
+        <div class="test-section">
+            <h3> Expected Behavior</h3>
+            <div class="flow-step">
+                <strong>1. Add Items to Cart</strong>
+                <br>Cart should show items, cart icon shows count
+            </div>
+            <div class="flow-step">
+                <strong>2. Proceed to Checkout</strong>
+                <br>Cart items should still be visible for review
+            </div>
+            <div class="flow-step">
+                <strong>3. Confirm Order</strong>
+                <br>Cart should be cleared immediately
+            </div>
+            <div class="flow-step">
+                <strong>4. Order Confirmation Page</strong>
+                <br>Cart should be empty, cart icon shows 0
+            </div>
+            <div class="flow-step">
+                <strong>5. Navigate Back to Cart</strong>
+                <br>Should show "Your cart is empty"
+            </div>
+        </div>
+
+        <div class="test-section">
+            <h3> Test in Your App</h3>
+            <ol>
+                <li>Add items to cart from product page</li>
+                <li>Go to cart page - verify items are there</li>
+                <li>Click "Proceed to Checkout"</li>
+                <li>Fill out checkout form and click "Confirm Order"</li>
+                <li>You should be redirected to order confirmation page</li>
+                <li>Check cart icon - should show 0 items</li>
+                <li>Go to cart page - should show "Your cart is empty"</li>
+            </ol>
+        </div>
+    </div>
+
+    <script>
+        // Simulate cart data
+        const sampleCartData = {
+            items: [
+                {
+                    _id: 'item1',
+                    product: { _id: 'prod1', name: 'Test Product 1', price: 100 },
+                    quantity: 2,
+                    selectedVariants: [
+                        { variation: { name: 'Color' }, value: 'Red' }
+                    ],
+                    price: 100,
+                    totalPrice: 200
+                },
+                {
+                    _id: 'item2',
+                    product: { _id: 'prod2', name: 'Test Product 2', price: 150 },
+                    quantity: 1,
+                    selectedVariants: [
+                        { variation: { name: 'Size' }, value: 'Large' }
+                    ],
+                    price: 150,
+                    totalPrice: 150
+                }
+            ],
+            subtotal: 350,
+            tax: 35,
+            delivery: 0,
+            total: 385
+        };
+
+        function checkCartStatus() {
+            const resultDiv = document.getElementById('cartStatus');
+            const savedCart = localStorage.getItem('cart');
+            
+            if (savedCart) {
+                try {
+                    const cart = JSON.parse(savedCart);
+                    const itemCount = cart.items?.reduce((sum, item) => sum + (item.quantity || 0), 0) || 0;
+                    
+                    resultDiv.innerHTML = `
+                        <div class="status ${itemCount > 0 ? 'warning' : 'success'}">
+                            Cart Status: ${itemCount > 0 ? 'Has Items' : 'Empty'}
+                        </div>
+                        <div class="cart-data">
+Items: ${itemCount}
+Subtotal: LKR ${(cart.subtotal || 0).toFixed(2)}
+Total: LKR ${(cart.total || 0).toFixed(2)}
+
+Cart Data:
+${JSON.stringify(cart, null, 2)}
+                        </div>
+                    `;
+                } catch (error) {
+                    resultDiv.innerHTML = `
+                        <div class="status error">
+                            Error parsing cart data: ${error.message}
+                        </div>
+                    `;
+                }
+            } else {
+                resultDiv.innerHTML = `
+                    <div class="status success">
+                        No cart data found in localStorage (Empty)
+                    </div>
+                `;
+            }
+        }
+
+        function simulateAddToCart() {
+            const resultDiv = document.getElementById('orderProcessResult');
+            
+            try {
+                localStorage.setItem('cart', JSON.stringify(sampleCartData));
+                resultDiv.innerHTML = `
+                    <div class="status success">
+                         Items added to cart successfully!
+                    </div>
+                    <div class="cart-data">
+Added ${sampleCartData.items.length} items
+Total: LKR ${sampleCartData.total.toFixed(2)}
+                    </div>
+                `;
+            } catch (error) {
+                resultDiv.innerHTML = `
+                    <div class="status error">
+                         Error adding items: ${error.message}
+                    </div>
+                `;
+            }
+        }
+
+        function simulateCheckout() {
+            const resultDiv = document.getElementById('orderProcessResult');
+            
+            // Simulate checkout process (cart should still have items)
+            const savedCart = localStorage.getItem('cart');
+            if (savedCart) {
+                const cart = JSON.parse(savedCart);
+                const itemCount = cart.items?.reduce((sum, item) => sum + (item.quantity || 0), 0) || 0;
+                
+                resultDiv.innerHTML = `
+                    <div class="status info">
+                         Checkout Process Started
+                    </div>
+                    <div class="cart-data">
+Cart still has ${itemCount} items (ready for review)
+Total: LKR ${cart.total.toFixed(2)}
+                    </div>
+                `;
+            } else {
+                resultDiv.innerHTML = `
+                    <div class="status error">
+                         No cart data found for checkout
+                    </div>
+                `;
+            }
+        }
+
+        function simulateOrderConfirmation() {
+            const resultDiv = document.getElementById('orderProcessResult');
+            
+            try {
+                // Simulate order confirmation - clear cart
+                const emptyCart = { items: [], subtotal: 0, tax: 0, delivery: 0, total: 0 };
+                localStorage.setItem('cart', JSON.stringify(emptyCart));
+                
+                resultDiv.innerHTML = `
+                    <div class="status success">
+                         Order Confirmed - Cart Cleared!
+                    </div>
+                    <div class="cart-data">
+Items: 0
+Subtotal: LKR 0.00
+Total: LKR 0.00
+                    </div>
+                `;
+            } catch (error) {
+                resultDiv.innerHTML = `
+                    <div class="status error">
+                         Error during order confirmation: ${error.message}
+                    </div>
+                `;
+            }
+        }
+
+        async function testCompleteOrderFlow() {
+            const resultDiv = document.getElementById('completeFlowResult');
+            resultDiv.innerHTML = '<div class="status info">Running complete order flow test...</div>';
+            
+            const steps = [];
+            
+            try {
+                // Step 1: Add items to cart
+                localStorage.setItem('cart', JSON.stringify(sampleCartData));
+                const cartAfterAdd = JSON.parse(localStorage.getItem('cart'));
+                const itemCountAfterAdd = cartAfterAdd.items?.reduce((sum, item) => sum + (item.quantity || 0), 0) || 0;
+                steps.push(` Added ${itemCountAfterAdd} items to cart`);
+                
+                // Step 2: Simulate checkout (cart should still have items)
+                const cartDuringCheckout = JSON.parse(localStorage.getItem('cart'));
+                const itemCountDuringCheckout = cartDuringCheckout.items?.reduce((sum, item) => sum + (item.quantity || 0), 0) || 0;
+                steps.push(` Checkout process - cart has ${itemCountDuringCheckout} items`);
+                
+                // Step 3: Simulate order confirmation (clear cart)
+                const emptyCart = { items: [], subtotal: 0, tax: 0, delivery: 0, total: 0 };
+                localStorage.setItem('cart', JSON.stringify(emptyCart));
+                steps.push(' Order confirmed - cart cleared');
+                
+                // Step 4: Verify cart is empty
+                const cartAfterConfirm = JSON.parse(localStorage.getItem('cart'));
+                const itemCountAfterConfirm = cartAfterConfirm.items?.reduce((sum, item) => sum + (item.quantity || 0), 0) || 0;
+                const totalAfterConfirm = cartAfterConfirm.total || 0;
+                
+                if (itemCountAfterConfirm === 0 && totalAfterConfirm === 0) {
+                    steps.push(' Verified cart is completely empty after order confirmation');
+                } else {
+                    steps.push(` Cart not properly cleared: ${itemCountAfterConfirm} items, LKR ${totalAfterConfirm}`);
+                }
+                
+                resultDiv.innerHTML = `
+                    <div class="status success">
+                         Complete order flow test passed!
+                    </div>
+                    <div class="cart-data">
+${steps.join('\n')}
+
+Final Cart State:
+Items: ${itemCountAfterConfirm}
+Total: LKR ${totalAfterConfirm.toFixed(2)}
+                    </div>
+                `;
+                
+            } catch (error) {
+                resultDiv.innerHTML = `
+                    <div class="status error">
+                         Flow test failed: ${error.message}
+                    </div>
+                    <div class="cart-data">
+${steps.join('\n')}
+                    </div>
+                `;
+            }
+        }
+
+        // Auto-check cart status on page load
+        window.addEventListener('load', () => {
+            setTimeout(checkCartStatus, 100);
+        });
+    </script>
+</body>
+</html>

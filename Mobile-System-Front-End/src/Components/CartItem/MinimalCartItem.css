@@ -1,0 +1,146 @@
+/* Minimal Cart Item Styles - System Default Colors Only */
+
+.minimal-cart-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  padding: 16px;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  background-color: #ffffff;
+  margin-bottom: 16px;
+  min-height: 120px;
+  max-height: 140px;
+  overflow: hidden;
+}
+
+.minimal-product-image {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 4px;
+  flex-shrink: 0;
+}
+
+.minimal-product-details {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+}
+
+.minimal-product-name {
+  font-size: 16px;
+  font-weight: normal;
+  margin-bottom: 4px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.minimal-product-brand {
+  font-size: 14px;
+  color: #666;
+  margin-bottom: 4px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.minimal-product-price {
+  font-size: 16px;
+  margin-bottom: 8px;
+}
+
+.minimal-selected-options {
+  font-size: 14px;
+  margin-bottom: 0;
+}
+
+.minimal-options-label {
+  font-weight: normal;
+  margin-bottom: 2px;
+}
+
+.minimal-options-text {
+  color: #666;
+}
+
+.minimal-cart-controls {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 8px;
+  min-width: 120px;
+}
+
+.minimal-quantity-controls {
+  display: flex;
+  align-items: center;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.minimal-quantity-btn {
+  background: #f5f5f5;
+  border: none;
+  padding: 6px 10px;
+  cursor: pointer;
+  font-size: 14px;
+  min-width: 32px;
+}
+
+.minimal-quantity-btn:hover {
+  background: #e0e0e0;
+}
+
+.minimal-quantity-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.minimal-quantity-display {
+  padding: 6px 8px;
+  font-size: 14px;
+  text-align: center;
+  min-width: 40px;
+  border-left: 1px solid #ccc;
+  border-right: 1px solid #ccc;
+}
+
+.minimal-item-total {
+  font-size: 16px;
+  text-align: right;
+}
+
+.minimal-remove-btn {
+  background: #f5f5f5;
+  border: 1px solid #ccc;
+  padding: 4px 8px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 12px;
+}
+
+.minimal-remove-btn:hover {
+  background: #e0e0e0;
+}
+
+/* Responsive adjustments */
+@media (max-width: 600px) {
+  .minimal-cart-item {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+  }
+
+  .minimal-cart-controls {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    min-width: auto;
+  }
+}

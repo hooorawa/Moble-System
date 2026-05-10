@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Populate Cart with Sample Data</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+            font-size: 16px;
+        }
+        .button:hover {
+            background: #0056b3;
+        }
+        .success {
+            color: #28a745;
+            font-weight: bold;
+        }
+        .error {
+            color: #dc3545;
+            font-weight: bold;
+        }
+        .info {
+            background: #e7f3ff;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1> Cart Data Population Tool</h1>
+        
+        <div class="info">
+            <h3>Current Issues:</h3>
+            <ul>
+                <li>Cart is empty (Items count: 0)</li>
+                <li>Backend server connection refused</li>
+                <li>Need sample data for testing</li>
+            </ul>
+        </div>
+
+        <h3>Step 1: Check Backend Server</h3>
+        <button class="button" onclick="checkBackend()">Check Backend Status</button>
+        <div id="backendStatus"></div>
+
+        <h3>Step 2: Add Sample Cart Data</h3>
+        <button class="button" onclick="addSampleData()">Add Sample Products to Cart</button>
+        <div id="sampleDataStatus"></div>
+
+        <h3>Step 3: Test Cart API</h3>
+        <button class="button" onclick="testCartAPI()">Test Cart API Endpoints</button>
+        <div id="apiTestStatus"></div>
+
+        <h3>Step 4: View Cart Data</h3>
+        <button class="button" onclick="viewCartData()">View Current Cart</button>
+        <div id="cartData"></div>
+    </div>
+
+    <script>
+        const API_BASE = 'http://localhost:4000/api';
+        const USER_ID = 'user-1758659711019-9n01q6k17';
+
+        // Sample product data
+        const sampleProducts = [
+            {
+                id: 'prod_001',
+                name: 'SAMSUNG Galaxy S24 Ultra',
+                brand: { name: 'SAMSUNG' },
+                price: 19999999.98,
+                image: 'https://via.placeholder.com/100x100/333333/ffffff?text=Samsung',
+                selectedVariants: [
+                    { variation: { name: 'color' }, value: 'green', priceAdjustment: 0 },
+                    { variation: { name: 'storage' }, value: '3000GB', priceAdjustment: 0 }
+                ]
+            },
+            {
+                id: 'prod_002',
+                name: 'iPhone 15 Pro',
+                brand: { name: 'Apple' },
+                price: 12500000.00,
+                image: 'https://via.placeholder.com/100x100/000000/ffffff?text=iPhone',
+                selectedVariants: [
+                    { variation: { name: 'color' }, value: 'blue titanium', priceAdjustment: 0 },
+                    { variation: { name: 'storage' }, value: '512GB', priceAdjustment: 500000 },
+                    { variation: { name: 'ram' }, value: '12GB', priceAdjustment: 200000 }
+                ]
+            },
+            {
+                id: 'prod_003',
+                name: 'Google Pixel 8',
+                brand: { name: 'Google' },
+                price: 8500000.00,
+                image: 'https://via.placeholder.com/100x100/4285f4/ffffff?text=Pixel',
+                selectedVariants: []
+            }
+        ];
+
+        async function checkBackend() {
+            const statusDiv = document.getElementById('backendStatus');
+            statusDiv.innerHTML = 'Checking backend...';
+            
+            try {
+                const response = await fetch(`${API_BASE}/cart/${USER_ID}`);
+                if (response.ok) {
+                    statusDiv.innerHTML = '<div class="success"> Backend server is running!</div>';
+                } else {
+                    statusDiv.innerHTML = '<div class="error"> Backend responded with error: ' + response.status + '</div>';
+                }
+            } catch (error) {
+                statusDiv.innerHTML = '<div class="error"> Backend server is not running. Please start your backend server first.</div>';
+            }
+        }
+
+        async function addSampleData() {
+            const statusDiv = document.getElementById('sampleDataStatus');
+            statusDiv.innerHTML = 'Adding sample data...';
+            
+            try {
+                // Clear existing cart first
+                await fetch(`${API_BASE}/cart/${USER_ID}/clear`, { method: 'DELETE' });
+                
+                // Add sample products
+                for (const product of sampleProducts) {
+                    const response = await fetch(`${API_BASE}/cart/${USER_ID}/add`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            productId: product.id,
+                            quantity: Math.floor(Math.random() * 3) + 1, // Random quantity 1-3
+                            selectedVariants: product.selectedVariants
+                        })
+                    });
+                    
+                    if (!response.ok) {
+                        throw new Error(`Failed to add product ${product.name}`);
+                    }
+                }
+                
+                statusDiv.innerHTML = '<div class="success"> Sample data added successfully!</div>';
+            } catch (error) {
+                statusDiv.innerHTML = '<div class="error"> Error adding sample data: ' + error.message + '</div>';
+            }
+        }
+
+        async function testCartAPI() {
+            const statusDiv = document.getElementById('apiTestStatus');
+            statusDiv.innerHTML = 'Testing API endpoints...';
+            
+            const tests = [
+                { name: 'Get Cart', url: `${API_BASE}/cart/${USER_ID}`, method: 'GET' },
+                { name: 'Add Item', url: `${API_BASE}/cart/${USER_ID}/add`, method: 'POST', body: { productId: 'test', quantity: 1, selectedVariants: [] } },
+                { name: 'Clear Cart', url: `${API_BASE}/cart/${USER_ID}/clear`, method: 'DELETE' }
+            ];
+            
+            let results = [];
+            
+            for (const test of tests) {
+                try {
+                    const options = {
+                        method: test.method,
+                        headers: { 'Content-Type': 'application/json' }
+                    };
+                    
+                    if (test.body) {
+                        options.body = JSON.stringify(test.body);
+                    }
+                    
+                    const response = await fetch(test.url, options);
+                    results.push(` ${test.name}: ${response.status}`);
+                } catch (error) {
+                    results.push(` ${test.name}: ${error.message}`);
+                }
+            }
+            
+            statusDiv.innerHTML = '<div>' + results.join('<br>') + '</div>';
+        }
+
+        async function viewCartData() {
+            const cartDiv = document.getElementById('cartData');
+            cartDiv.innerHTML = 'Loading cart data...';
+            
+            try {
+                const response = await fetch(`${API_BASE}/cart/${USER_ID}`);
+                const data = await response.json();
+                
+                if (data.success) {
+                    cartDiv.innerHTML = `
+                        <div class="success"> Cart loaded successfully!</div>
+                        <pre style="background: #f8f9fa; padding: 15px; border-radius: 5px; overflow-x: auto;">
+Items count: ${data.data.items.length}
+${JSON.stringify(data.data, null, 2)}
+                        </pre>
+                    `;
+                } else {
+                    cartDiv.innerHTML = '<div class="error">Failed to load cart: ' + data.message + '</div>';
+                }
+            } catch (error) {
+                cartDiv.innerHTML = '<div class="error"> Error loading cart: ' + error.message + '</div>';
+            }
+        }
+
+        // Auto-check backend on page load
+        window.addEventListener('load', () => {
+            checkBackend();
+        });
+    </script>
+</body>
+</html>

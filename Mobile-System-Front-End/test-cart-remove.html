@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Cart Remove Function</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        .button.danger {
+            background: #dc3545;
+        }
+        .success { color: #28a745; font-weight: bold; }
+        .error { color: #dc3545; font-weight: bold; }
+        .info { background: #e7f3ff; padding: 10px; border-radius: 5px; margin: 10px 0; }
+        .cart-item {
+            background: #f8f9fa;
+            padding: 10px;
+            margin: 5px 0;
+            border-radius: 5px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1> Test Cart Remove Functionality</h1>
+        
+        <div class="info">
+            <h3>What This Tests:</h3>
+            <ul>
+                <li> Get current cart items</li>
+                <li> Remove individual items</li>
+                <li> Clear entire cart</li>
+                <li> Verify database sync</li>
+            </ul>
+        </div>
+
+        <h3>Step 1: View Current Cart</h3>
+        <button class="button" onclick="viewCart()">View Cart</button>
+        <div id="cartView"></div>
+
+        <h3>Step 2: Remove Specific Item</h3>
+        <input type="text" id="itemIdInput" placeholder="Enter item ID" style="padding: 8px; width: 300px; margin-right: 10px;">
+        <button class="button" onclick="removeItem()">Remove Item</button>
+        <div id="removeResult"></div>
+
+        <h3>Step 3: Clear All Items</h3>
+        <button class="button danger" onclick="clearCart()">Clear Entire Cart</button>
+        <div id="clearResult"></div>
+
+        <h3>Step 4: Verify Database</h3>
+        <button class="button" onclick="verifyDatabase()">Check Database</button>
+        <div id="verifyResult"></div>
+    </div>
+
+    <script>
+        const API_BASE = 'http://localhost:4000/api';
+        const USER_ID = 'user-1758659711019-9n01q6k17';
+
+        async function viewCart() {
+            const resultDiv = document.getElementById('cartView');
+            resultDiv.innerHTML = 'Loading cart...';
+            
+            try {
+                const response = await fetch(`${API_BASE}/cart/${USER_ID}`);
+                const data = await response.json();
+                
+                if (data.success) {
+                    if (data.data.items.length === 0) {
+                        resultDiv.innerHTML = '<div class="error">Cart is empty</div>';
+                        return;
+                    }
+
+                    let html = '<div class="success">Cart loaded successfully!</div>';
+                    html += `<p><strong>Total items:</strong> ${data.data.items.length}</p>`;
+                    
+                    data.data.items.forEach((item, index) => {
+                        html += `
+                            <div class="cart-item">
+                                <div>
+                                    <strong>Item ${index + 1}:</strong> ${item.product?.name || 'Unknown'}
+                                    <br><small>ID: ${item._id}</small>
+                                </div>
+                                <button class="button danger" onclick="removeSpecificItem('${item._id}')">Remove</button>
+                            </div>
+                        `;
+                    });
+                    
+                    resultDiv.innerHTML = html;
+                } else {
+                    resultDiv.innerHTML = `<div class="error"> ${data.message}</div>`;
+                }
+            } catch (error) {
+                resultDiv.innerHTML = `<div class="error"> Error: ${error.message}</div>`;
+            }
+        }
+
+        async function removeItem() {
+            const itemId = document.getElementById('itemIdInput').value.trim();
+            const resultDiv = document.getElementById('removeResult');
+            
+            if (!itemId) {
+                resultDiv.innerHTML = '<div class="error">Please enter an item ID</div>';
+                return;
+            }
+            
+            resultDiv.innerHTML = 'Removing item...';
+            
+            try {
+                console.log('Attempting to remove item:', itemId);
+                
+                const response = await fetch(`${API_BASE}/cart/${USER_ID}/item/${itemId}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    }
+                });
+                
+                console.log('Response status:', response.status);
+                
+                const data = await response.json();
+                console.log('Response data:', data);
+                
+                if (data.success) {
+                    resultDiv.innerHTML = `
+                        <div class="success"> Item removed successfully!</div>
+                        <div>Remaining items: ${data.data.items.length}</div>
+                    `;
+                    viewCart(); // Refresh cart view
+                } else {
+                    resultDiv.innerHTML = `<div class="error"> ${data.message}</div>`;
+                }
+            } catch (error) {
+                resultDiv.innerHTML = `<div class="error"> Error: ${error.message}</div>`;
+            }
+        }
+
+        async function removeSpecificItem(itemId) {
+            document.getElementById('itemIdInput').value = itemId;
+            await removeItem();
+        }
+
+        async function clearCart() {
+            if (!confirm('Are you sure you want to clear the entire cart?')) {
+                return;
+            }
+            
+            const resultDiv = document.getElementById('clearResult');
+            resultDiv.innerHTML = 'Clearing cart...';
+            
+            try {
+                console.log('Attempting to clear cart for user:', USER_ID);
+                
+                const response = await fetch(`${API_BASE}/cart/${USER_ID}/clear`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    }
+                });
+                
+                console.log('Clear response status:', response.status);
+                
+                const data = await response.json();
+                console.log('Clear response data:', data);
+                
+                if (data.success) {
+                    resultDiv.innerHTML = '<div class="success"> Cart cleared successfully!</div>';
+                    viewCart(); // Refresh cart view
+                } else {
+                    resultDiv.innerHTML = `<div class="error"> ${data.message}</div>`;
+                }
+            } catch (error) {
+                resultDiv.innerHTML = `<div class="error"> Error: ${error.message}</div>`;
+            }
+        }
+
+        async function verifyDatabase() {
+            const resultDiv = document.getElementById('verifyResult');
+            resultDiv.innerHTML = 'Checking database...';
+            
+            try {
+                const response = await fetch(`${API_BASE}/cart/${USER_ID}`);
+                const data = await response.json();
+                
+                if (data.success) {
+                    resultDiv.innerHTML = `
+                        <div class="success"> Database verified!</div>
+                        <div>
+                            <strong>Items in database:</strong> ${data.data.items.length}
+                            <br><strong>Subtotal:</strong> LKR ${data.data.subtotal || 0}
+                            <br><strong>Total:</strong> LKR ${data.data.total || 0}
+                        </div>
+                        <pre style="background: #f8f9fa; padding: 10px; border-radius: 5px; overflow-x: auto; font-size: 12px;">
+${JSON.stringify(data.data, null, 2)}
+                        </pre>
+                    `;
+                } else {
+                    resultDiv.innerHTML = `<div class="error"> ${data.message}</div>`;
+                }
+            } catch (error) {
+                resultDiv.innerHTML = `<div class="error"> Error: ${error.message}</div>`;
+            }
+        }
+
+        // Auto-load cart on page load
+        window.addEventListener('load', () => {
+            viewCart();
+        });
+    </script>
+</body>
+</html>

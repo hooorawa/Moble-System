@@ -1,0 +1,224 @@
+.user-profile {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 12px;
+  background: white;
+  border-radius: 8px;
+  border: 1px solid #e9ecef;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.user-profile:hover {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  transform: translateY(-1px);
+}
+
+.user-profile-avatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  box-shadow: 0 2px 6px rgba(102, 126, 234, 0.3);
+}
+
+.user-profile-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.user-profile-name {
+  font-weight: 600;
+  color: #333;
+  margin: 0;
+  line-height: 1.2;
+}
+
+.user-profile-email {
+  font-size: 0.9rem;
+  color: #666;
+  margin: 0;
+  line-height: 1.2;
+}
+
+.user-profile-role {
+  font-size: 0.8rem;
+  color: #1976d2;
+  background: #e3f2fd;
+  padding: 2px 8px;
+  border-radius: 12px;
+  display: inline-block;
+  margin-top: 2px;
+  text-transform: capitalize;
+}
+
+.avatar-text {
+  color: white;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+/* Size variations */
+.user-profile-small {
+  padding: 6px 8px;
+  gap: 8px;
+}
+
+.user-profile-small .user-profile-avatar {
+  width: 32px;
+  height: 32px;
+}
+
+.user-profile-small .avatar-text {
+  font-size: 0.8rem;
+}
+
+.user-profile-small .user-profile-name {
+  font-size: 0.9rem;
+}
+
+.user-profile-small .user-profile-email {
+  font-size: 0.8rem;
+}
+
+.user-profile-small .user-profile-role {
+  font-size: 0.7rem;
+}
+
+.user-profile-medium {
+  padding: 8px 12px;
+  gap: 12px;
+}
+
+.user-profile-medium .user-profile-avatar {
+  width: 40px;
+  height: 40px;
+}
+
+.user-profile-medium .avatar-text {
+  font-size: 1rem;
+}
+
+.user-profile-medium .user-profile-name {
+  font-size: 1rem;
+}
+
+.user-profile-medium .user-profile-email {
+  font-size: 0.9rem;
+}
+
+.user-profile-medium .user-profile-role {
+  font-size: 0.8rem;
+}
+
+.user-profile-large {
+  padding: 12px 16px;
+  gap: 16px;
+}
+
+.user-profile-large .user-profile-avatar {
+  width: 48px;
+  height: 48px;
+}
+
+.user-profile-large .avatar-text {
+  font-size: 1.2rem;
+}
+
+.user-profile-large .user-profile-name {
+  font-size: 1.1rem;
+}
+
+.user-profile-large .user-profile-email {
+  font-size: 1rem;
+}
+
+.user-profile-large .user-profile-role {
+  font-size: 0.9rem;
+}
+
+/* Compact version for headers/sidebars */
+.user-profile-compact {
+  padding: 6px 8px;
+  background: transparent;
+  border: none;
+  box-shadow: none;
+}
+
+.user-profile-compact:hover {
+  box-shadow: none;
+  transform: none;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 6px;
+}
+
+.user-profile-compact .user-profile-avatar {
+  width: 36px;
+  height: 36px;
+}
+
+.user-profile-compact .avatar-text {
+  font-size: 0.9rem;
+}
+
+.user-profile-compact .user-profile-name {
+  font-size: 0.95rem;
+  font-weight: 500;
+}
+
+.user-profile-compact .user-profile-email {
+  font-size: 0.85rem;
+  color: #888;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .user-profile {
+    padding: 6px 10px;
+    gap: 10px;
+  }
+
+  .user-profile-medium .user-profile-avatar {
+    width: 36px;
+    height: 36px;
+  }
+
+  .user-profile-medium .avatar-text {
+    font-size: 0.9rem;
+  }
+
+  .user-profile-medium .user-profile-name {
+    font-size: 0.95rem;
+  }
+
+  .user-profile-medium .user-profile-email {
+    font-size: 0.85rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .user-profile {
+    padding: 4px 8px;
+    gap: 8px;
+  }
+
+  .user-profile-medium .user-profile-avatar {
+    width: 32px;
+    height: 32px;
+  }
+
+  .user-profile-medium .avatar-text {
+    font-size: 0.8rem;
+  }
+
+  .user-profile-medium .user-profile-name {
+    font-size: 0.9rem;
+  }
+
+  .user-profile-medium .user-profile-email {
+    font-size: 0.8rem;
+  }
+}

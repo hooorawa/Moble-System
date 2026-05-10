@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Navigation Speed Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .test-section {
+            background: #f8f9fa;
+            padding: 20px;
+            margin: 15px 0;
+            border-radius: 8px;
+            border-left: 4px solid #007bff;
+        }
+        .test-section.success {
+            border-left-color: #28a745;
+            background: #d4edda;
+        }
+        .test-section.warning {
+            border-left-color: #ffc107;
+            background: #fff3cd;
+        }
+        .button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+            font-size: 16px;
+        }
+        .button:hover {
+            background: #0056b3;
+        }
+        .time {
+            font-size: 32px;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+        .fast { color: #28a745; }
+        .medium { color: #007bff; }
+        .slow { color: #dc3545; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1> Navigation Speed Test</h1>
+        
+        <div class="test-section success">
+            <h3>✅ Optimizations Applied:</h3>
+            <ul>
+                <li>Removed loading states from Cart page</li>
+                <li>Preloaded cart context in ProductDetail</li>
+                <li>Instant localStorage loading</li>
+                <li>Background database sync</li>
+                <li>Client-side routing optimization</li>
+            </ul>
+        </div>
+
+        <div class="test-section">
+            <h3> Test 1: localStorage Read Speed</h3>
+            <button class="button" onclick="testLocalStorage()">Test localStorage</button>
+            <div id="localStorageResult"></div>
+        </div>
+
+        <div class="test-section">
+            <h3> Test 2: Cart Data Load Speed</h3>
+            <button class="button" onclick="testCartLoad()">Test Cart Load</button>
+            <div id="cartLoadResult"></div>
+        </div>
+
+        <div class="test-section">
+            <h3> Test 3: Simulated Navigation</h3>
+            <button class="button" onclick="simulateNavigation()">Simulate Product → Cart</button>
+            <div id="navigationResult"></div>
+        </div>
+
+        <div class="test-section">
+            <h3> Expected Results:</h3>
+            <table style="width: 100%; border-collapse: collapse;">
+                <tr style="border-bottom: 1px solid #ddd;">
+                    <th style="text-align: left; padding: 8px;">Metric</th>
+                    <th style="text-align: right; padding: 8px;">Target</th>
+                    <th style="text-align: right; padding: 8px;">Status</th>
+                </tr>
+                <tr style="border-bottom: 1px solid #ddd;">
+                    <td style="padding: 8px;">localStorage Read</td>
+                    <td style="text-align: right; padding: 8px;">&lt;10ms</td>
+                    <td style="text-align: right; padding: 8px;"></td>
+                </tr>
+                <tr style="border-bottom: 1px solid #ddd;">
+                    <td style="padding: 8px;">Cart Data Load</td>
+                    <td style="text-align: right; padding: 8px;">&lt;50ms</td>
+                    <td style="text-align: right; padding: 8px;"></td>
+                </tr>
+                <tr style="border-bottom: 1px solid #ddd;">
+                    <td style="padding: 8px;">Navigation Time</td>
+                    <td style="text-align: right; padding: 8px;">~0ms</td>
+                    <td style="text-align: right; padding: 8px;"></td>
+                </tr>
+                <tr>
+                    <td style="padding: 8px;">Total Perceived Load</td>
+                    <td style="text-align: right; padding: 8px;">&lt;30ms</td>
+                    <td style="text-align: right; padding: 8px;"></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        function testLocalStorage() {
+            const resultDiv = document.getElementById('localStorageResult');
+            const runs = 10;
+            const times = [];
+            
+            // Run test multiple times
+            for (let i = 0; i < runs; i++) {
+                const start = performance.now();
+                const savedCart = localStorage.getItem('cart');
+                if (savedCart) {
+                    JSON.parse(savedCart);
+                }
+                const end = performance.now();
+                times.push(end - start);
+            }
+            
+            const avgTime = (times.reduce((a, b) => a + b, 0) / runs).toFixed(2);
+            const minTime = Math.min(...times).toFixed(2);
+            const maxTime = Math.max(...times).toFixed(2);
+            
+            const timeClass = avgTime < 10 ? 'fast' : avgTime < 50 ? 'medium' : 'slow';
+            const status = avgTime < 10 ? ' Lightning Fast!' : avgTime < 50 ? '✅ Fast' : '⚠️ Needs Optimization';
+            
+            resultDiv.innerHTML = `
+                <div class="time ${timeClass}">
+                    Average: ${avgTime}ms
+                </div>
+                <div>Min: ${minTime}ms | Max: ${maxTime}ms | Runs: ${runs}</div>
+                <div style="margin-top: 10px; font-weight: bold;">${status}</div>
+            `;
+        }
+
+        function testCartLoad() {
+            const resultDiv = document.getElementById('cartLoadResult');
+            
+            const start = performance.now();
+            
+            // Simulate cart load process
+            const savedCart = localStorage.getItem('cart');
+            let cart = { items: [], subtotal: 0, total: 0 };
+            if (savedCart) {
+                cart = JSON.parse(savedCart);
+            }
+            
+            // Simulate React rendering
+            const itemCount = cart.items?.reduce((sum, item) => sum + (item.quantity || 0), 0) || 0;
+            
+            const end = performance.now();
+            const time = (end - start).toFixed(2);
+            
+            const timeClass = time < 30 ? 'fast' : time < 100 ? 'medium' : 'slow';
+            const status = time < 30 ? ' Instant!' : time < 100 ? ' Fast' : '⚠️ Slow';
+            
+            resultDiv.innerHTML = `
+                <div class="time ${timeClass}">
+                    ${time}ms
+                </div>
+                <div>Cart items: ${itemCount}</div>
+                <div style="margin-top: 10px; font-weight: bold;">${status}</div>
+            `;
+        }
+
+        function simulateNavigation() {
+            const resultDiv = document.getElementById('navigationResult');
+            resultDiv.innerHTML = 'Simulating navigation...';
+            
+            const start = performance.now();
+            
+            // Step 1: User clicks cart icon (0ms - immediate)
+            const clickTime = performance.now();
+            
+            // Step 2: Load cart data from localStorage
+            const savedCart = localStorage.getItem('cart');
+            let cart = { items: [], subtotal: 0, total: 0 };
+            if (savedCart) {
+                cart = JSON.parse(savedCart);
+            }
+            const dataLoadTime = performance.now();
+            
+            // Step 3: Simulate React component render
+            const itemCount = cart.items?.reduce((sum, item) => sum + (item.quantity || 0), 0) || 0;
+            const subtotal = cart.subtotal || 0;
+            const total = cart.total || 0;
+            const renderTime = performance.now();
+            
+            const totalTime = (renderTime - start).toFixed(2);
+            const loadTime = (dataLoadTime - clickTime).toFixed(2);
+            const renderOnlyTime = (renderTime - dataLoadTime).toFixed(2);
+            
+            const timeClass = totalTime < 50 ? 'fast' : totalTime < 200 ? 'medium' : 'slow';
+            const status = totalTime < 50 ? ' Instant Navigation!' : totalTime < 200 ? '✅ Fast' : '⚠️ Needs Optimization';
+            
+            setTimeout(() => {
+                resultDiv.innerHTML = `
+                    <div class="time ${timeClass}">
+                        Total: ${totalTime}ms
+                    </div>
+                    <div style="margin: 10px 0;">
+                        <strong>Breakdown:</strong><br>
+                        1. Click event: 0ms (instant)<br>
+                        2. Load data: ${loadTime}ms<br>
+                        3. Render: ${renderOnlyTime}ms<br>
+                        4. Total perceived: ${totalTime}ms
+                    </div>
+                    <div style="margin-top: 10px; font-weight: bold;">${status}</div>
+                    <div style="margin-top: 10px; padding: 10px; background: #e7f3ff; border-radius: 5px;">
+                        Cart loaded with ${itemCount} items<br>
+                        Subtotal: LKR ${subtotal.toFixed(2)}<br>
+                        Total: LKR ${total.toFixed(2)}
+                    </div>
+                `;
+            }, 100);
+        }
+
+        // Auto-run tests on page load
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                testLocalStorage();
+                testCartLoad();
+            }, 500);
+        });
+    </script>
+</body>
+</html>

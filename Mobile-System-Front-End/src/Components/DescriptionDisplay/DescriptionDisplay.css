@@ -1,0 +1,290 @@
+/* Description Display Component Styles */
+.description-display-container {
+  width: 100%;
+  margin: 16px 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+  background: transparent !important;
+}
+
+.description-display-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: #6b7280 !important;
+  margin-bottom: 12px;
+  line-height: 1.4;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+
+.description-display-title::before {
+  content: '';
+  width: 4px;
+  height: 16px;
+  background: #374151;
+  border-radius: 2px;
+}
+
+.description-display-list {
+  background: #ffffff !important;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 12px;
+  max-height: 300px;
+  overflow-y: auto;
+  list-style: none;
+  margin: 0;
+  padding-left: 0;
+}
+
+.description-display-item {
+  padding: 8px 0;
+  border-bottom: 1px solid #f3f4f6;
+  line-height: 1.5;
+  animation: fadeInUp 0.3s ease-out;
+  position: relative;
+  padding-left: 20px;
+}
+
+.description-display-item:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.description-display-item:first-child {
+  padding-top: 0;
+}
+
+.description-display-item::before {
+  content: "•";
+  color: #374151;
+  font-weight: bold;
+  position: absolute;
+  left: 0;
+  top: 8px;
+  font-size: 16px;
+}
+
+.line-text {
+  font-size: 14px;
+  color: #6b7280 !important;
+  word-wrap: break-word;
+  white-space: pre-wrap;
+  display: block;
+}
+
+/* Hover Effects */
+.description-display-item:hover {
+  background: #ffffff !important;
+  border-radius: 6px;
+  margin: 0 -8px;
+  padding-left: 28px;
+  padding-right: 8px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+/* Scrollbar Styling */
+.description-display-list::-webkit-scrollbar {
+  width: 6px;
+}
+
+.description-display-list::-webkit-scrollbar-track {
+  background: #ffffff;
+  border-radius: 3px;
+}
+
+.description-display-list::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 3px;
+}
+
+.description-display-list::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* Animations */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Compact Variant */
+.description-display-container.compact .description-display-title {
+  font-size: 14px;
+  margin-bottom: 8px;
+}
+
+.description-display-container.compact .description-display-list {
+  padding: 8px;
+  max-height: 200px;
+}
+
+.description-display-container.compact .description-display-item {
+  padding: 6px 0;
+  padding-left: 16px;
+}
+
+.description-display-container.compact .description-display-item::before {
+  font-size: 14px;
+  top: 6px;
+}
+
+.description-display-container.compact .line-text {
+  font-size: 13px;
+}
+
+/* Minimal Variant */
+.description-display-container.minimal .description-display-title {
+  font-size: 14px;
+  margin-bottom: 8px;
+}
+
+.description-display-container.minimal .description-display-list {
+  background: transparent;
+  border: none;
+  padding: 0;
+  max-height: none;
+}
+
+.description-display-container.minimal .description-display-item {
+  padding: 4px 0;
+  border-bottom: 1px solid #f3f4f6;
+  padding-left: 16px;
+}
+
+.description-display-container.minimal .description-display-item::before {
+  color: #374151;
+  font-size: 12px;
+  top: 4px;
+}
+
+.description-display-container.minimal .line-text {
+  font-size: 13px;
+  color: #6b7280;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .description-display-container {
+    margin: 12px 0;
+  }
+  
+  .description-display-title {
+    font-size: 15px;
+  }
+  
+  .description-display-list {
+    padding: 10px;
+  }
+  
+  .description-display-item {
+    padding-left: 18px;
+  }
+  
+  .description-display-item::before {
+    font-size: 14px;
+  }
+  
+  .line-text {
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 480px) {
+  .description-display-container {
+    margin: 8px 0;
+  }
+  
+  .description-display-title {
+    font-size: 14px;
+    margin-bottom: 8px;
+  }
+  
+  .description-display-list {
+    padding: 8px;
+  }
+  
+  .description-display-item {
+    padding: 6px 0;
+    padding-left: 16px;
+  }
+  
+  .description-display-item::before {
+    font-size: 12px;
+    top: 6px;
+  }
+  
+  .line-text {
+    font-size: 12px;
+  }
+}
+
+/* Dark Mode Support - Override to maintain white background and gray text */
+@media (prefers-color-scheme: dark) {
+  .description-display-title {
+    color: #6b7280 !important;
+  }
+  
+  .description-display-list {
+    background: #ffffff !important;
+    border-color: #e5e7eb !important;
+  }
+  
+  .description-display-item {
+    border-color: #f3f4f6 !important;
+  }
+  
+  .description-display-item:hover {
+    background: #ffffff !important;
+  }
+  
+  .description-display-item::before {
+    color: #374151 !important;
+  }
+  
+  .line-text {
+    color: #6b7280 !important;
+  }
+  
+  .description-display-container.minimal .description-display-item::before {
+    color: #374151 !important;
+  }
+  
+  .description-display-container.minimal .line-text {
+    color: #6b7280 !important;
+  }
+  
+  .description-display-container.minimal .description-display-item {
+    border-color: #f3f4f6 !important;
+  }
+}
+
+/* Accessibility Improvements */
+@media (prefers-reduced-motion: reduce) {
+  .description-display-item {
+    animation: none;
+  }
+}
+
+/* High Contrast Mode */
+@media (prefers-contrast: high) {
+  .description-display-list {
+    border-width: 2px;
+  }
+  
+  .description-display-item {
+    border-bottom-width: 2px;
+  }
+  
+  .description-display-item::before {
+    font-weight: 900;
+  }
+}

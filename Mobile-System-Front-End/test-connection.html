@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Backend Connection</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        .success { color: #28a745; font-weight: bold; }
+        .error { color: #dc3545; font-weight: bold; }
+        .info { background: #e7f3ff; padding: 10px; border-radius: 5px; margin: 10px 0; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1> Backend Connection Test</h1>
+        
+        <div class="info">
+            <h3>Issues Fixed:</h3>
+            <ul>
+                <li> Removed infinite loop in CartContext</li>
+                <li> Added timeout to fetch requests</li>
+                <li> Added sample data to backend</li>
+                <li> Reduced console logging spam</li>
+            </ul>
+        </div>
+
+        <h3>Test Backend Connection:</h3>
+        <button class="button" onclick="testConnection()">Test Connection</button>
+        <div id="result"></div>
+
+        <h3>Test Cart API:</h3>
+        <button class="button" onclick="testCart()">Test Cart API</button>
+        <div id="cartResult"></div>
+    </div>
+
+    <script>
+        const API_BASE = 'http://localhost:4000/api';
+        const USER_ID = 'user-1758659711019-9n01q6k17';
+
+        async function testConnection() {
+            const resultDiv = document.getElementById('result');
+            resultDiv.innerHTML = 'Testing connection...';
+            
+            try {
+                const response = await fetch(`${API_BASE}/cart/${USER_ID}`, {
+                    method: 'GET',
+                    headers: { 'Content-Type': 'application/json' },
+                    signal: AbortSignal.timeout(5000)
+                });
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    resultDiv.innerHTML = `
+                        <div class="success"> Connection successful!</div>
+                        <div>Items count: ${data.data.items.length}</div>
+                        <div>Cart ID: ${data.data._id}</div>
+                    `;
+                } else {
+                    resultDiv.innerHTML = `<div class="error"> HTTP Error: ${response.status}</div>`;
+                }
+            } catch (error) {
+                resultDiv.innerHTML = `<div class="error"> Connection failed: ${error.message}</div>`;
+            }
+        }
+
+        async function testCart() {
+            const resultDiv = document.getElementById('cartResult');
+            resultDiv.innerHTML = 'Testing cart...';
+            
+            try {
+                const response = await fetch(`${API_BASE}/cart/${USER_ID}`);
+                const data = await response.json();
+                
+                if (data.success) {
+                    resultDiv.innerHTML = `
+                        <div class="success"> Cart loaded successfully!</div>
+                        <div>Items: ${data.data.items.length}</div>
+                        <div>Subtotal: LKR ${data.data.subtotal || 0}</div>
+                        <pre style="background: #f8f9fa; padding: 10px; border-radius: 5px; overflow-x: auto;">
+${JSON.stringify(data.data, null, 2)}
+                        </pre>
+                    `;
+                } else {
+                    resultDiv.innerHTML = `<div class="error"> Cart error: ${data.message}</div>`;
+                }
+            } catch (error) {
+                resultDiv.innerHTML = `<div class="error"> Cart test failed: ${error.message}</div>`;
+            }
+        }
+
+        // Auto-test on page load
+        window.addEventListener('load', () => {
+            testConnection();
+        });
+    </script>
+</body>
+</html>

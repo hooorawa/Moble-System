@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Variant Capture Example</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .product-details {
+            border: 1px solid #ddd;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+        }
+        .variant-option {
+            display: inline-block;
+            margin: 5px;
+            padding: 10px 15px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .variant-option:hover {
+            border-color: #007bff;
+        }
+        .variant-option.selected {
+            background-color: #007bff;
+            color: white;
+            border-color: #007bff;
+        }
+        .variant-option.active {
+            background-color: #28a745;
+            color: white;
+            border-color: #28a745;
+        }
+        select, input[type="radio"], input[type="checkbox"] {
+            margin: 5px;
+        }
+        .add-to-cart-btn {
+            background-color: #007bff;
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 20px 0;
+        }
+        .add-to-cart-btn:hover {
+            background-color: #0056b3;
+        }
+        .captured-variants {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+        .variant-tag {
+            display: inline-block;
+            background-color: #e9ecef;
+            color: #495057;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            margin: 2px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Product Variant Capture Example</h1>
+    <p>This example shows how to use the variant capture system with different types of variant selectors.</p>
+
+    <div class="product-details">
+        <h2>Samsung Galaxy S24 Ultra</h2>
+        <p>Price: $999.99</p>
+
+        <!-- Color Selection (Button Style) -->
+        <div class="variant-section">
+            <h3>Color</h3>
+            <button class="variant-option" data-variant-key="color" data-variant-value="black">Black</button>
+            <button class="variant-option selected" data-variant-key="color" data-variant-value="white">White</button>
+            <button class="variant-option" data-variant-key="color" data-variant-value="blue">Blue</button>
+            <button class="variant-option" data-variant-key="color" data-variant-value="green">Green</button>
+        </div>
+
+        <!-- Storage Selection (Select Dropdown) -->
+        <div class="variant-section">
+            <h3>Storage</h3>
+            <select data-variant-key="storage">
+                <option value="">Select Storage</option>
+                <option value="128GB">128GB</option>
+                <option value="256GB" selected>256GB</option>
+                <option value="512GB">512GB</option>
+                <option value="1TB">1TB</option>
+            </select>
+        </div>
+
+        <!-- RAM Selection (Radio Buttons) -->
+        <div class="variant-section">
+            <h3>RAM</h3>
+            <label>
+                <input type="radio" name="ram" value="8GB" data-variant-key="ram" checked>
+                8GB
+            </label>
+            <label>
+                <input type="radio" name="ram" value="12GB" data-variant-key="ram">
+                12GB
+            </label>
+            <label>
+                <input type="radio" name="ram" value="16GB" data-variant-key="ram">
+                16GB
+            </label>
+        </div>
+
+        <!-- Features Selection (Checkboxes) -->
+        <div class="variant-section">
+            <h3>Features</h3>
+            <label>
+                <input type="checkbox" value="wireless-charging" data-variant-key="features" checked>
+                Wireless Charging
+            </label>
+            <label>
+                <input type="checkbox" value="water-resistant" data-variant-key="features" checked>
+                Water Resistant
+            </label>
+            <label>
+                <input type="checkbox" value="5g" data-variant-key="features">
+                5G
+            </label>
+        </div>
+
+        <!-- Quantity -->
+        <div class="variant-section">
+            <h3>Quantity</h3>
+            <input type="number" name="quantity" value="1" min="1" max="10">
+        </div>
+
+        <!-- Add to Cart Button -->
+        <button class="add-to-cart-btn" data-add-to-cart data-product-id="samsung-s24-ultra">
+            Add to Cart
+        </button>
+    </div>
+
+    <!-- Captured Variants Display -->
+    <div class="captured-variants">
+        <h3>Captured Variants:</h3>
+        <div id="captured-variants-display">
+            <p>Select variants above to see them captured here...</p>
+        </div>
+    </div>
+
+    <!-- Include the variant capture script -->
+    <script src="/src/utils/variantCapture.js"></script>
+    
+    <script>
+        // Example of how to use the variant capture system
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add click handlers for variant buttons
+            document.querySelectorAll('.variant-option').forEach(button => {
+                button.addEventListener('click', function() {
+                    // Remove selected class from siblings
+                    const siblings = this.parentNode.querySelectorAll('.variant-option');
+                    siblings.forEach(sibling => sibling.classList.remove('selected'));
+                    
+                    // Add selected class to clicked button
+                    this.classList.add('selected');
+                    
+                    // Update display
+                    updateCapturedVariantsDisplay();
+                });
+            });
+
+            // Add change handlers for other inputs
+            document.querySelectorAll('select, input[type="radio"], input[type="checkbox"]').forEach(input => {
+                input.addEventListener('change', updateCapturedVariantsDisplay);
+            });
+
+            // Listen for the custom add to cart event
+            document.addEventListener('addToCartWithVariants', function(event) {
+                console.log('Add to cart event received:', event.detail);
+                alert(`Adding to cart:\nProduct: ${event.detail.productId}\nQuantity: ${event.detail.quantity}\nVariants: ${JSON.stringify(event.detail.variants, null, 2)}`);
+            });
+
+            function updateCapturedVariantsDisplay() {
+                if (window.variantCapture) {
+                    const variants = window.variantCapture.captureVariants();
+                    const display = document.getElementById('captured-variants-display');
+                    
+                    if (Object.keys(variants).length > 0) {
+                        display.innerHTML = Object.entries(variants)
+                            .map(([key, value]) => `<span class="variant-tag">${key.charAt(0).toUpperCase() + key.slice(1)}: ${value}</span>`)
+                            .join('');
+                    } else {
+                        display.innerHTML = '<p>No variants selected</p>';
+                    }
+                }
+            }
+
+            // Initial display update
+            updateCapturedVariantsDisplay();
+        });
+    </script>
+</body>
+</html>
