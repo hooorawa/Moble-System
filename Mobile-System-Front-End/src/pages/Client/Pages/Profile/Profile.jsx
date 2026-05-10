@@ -70,7 +70,7 @@ const Profile = () => {
             <div className="profile-avatar">
               {user.profilePicture ? (
                 <img 
-                  src={`http://localhost:4000${user.profilePicture}`} 
+                  src={`${import.meta.env.VITE_SERVER_URL || (import.meta.env.VITE_SERVER_URL || 'http://localhost:4000')}${user.profilePicture}`} 
                   alt="Profile" 
                   className="profile-image"
                 />

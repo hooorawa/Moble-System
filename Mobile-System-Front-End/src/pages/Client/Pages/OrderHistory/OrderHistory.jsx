@@ -196,7 +196,7 @@ const OrderHistory = () => {
                       : imageUrl?.startsWith('http://') || imageUrl?.startsWith('https://')
                       ? imageUrl
                       : imageUrl 
-                      ? `http://localhost:4000${imageUrl}` 
+                      ? `${import.meta.env.VITE_SERVER_URL || (import.meta.env.VITE_SERVER_URL || 'http://localhost:4000')}${imageUrl}` 
                       : null;
                     
                     return (

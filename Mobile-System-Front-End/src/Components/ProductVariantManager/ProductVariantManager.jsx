@@ -42,7 +42,7 @@ const ProductVariantManager = ({ productId, productName }) => {
   const fetchProductVariants = async () => {
     try {
       setLoading(true);
-      const response = await fetch(`http://localhost:4000/api/product-variant/product/${productId}/grouped`);
+      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL || (import.meta.env.VITE_API_BASE_URL || (import.meta.env.VITE_SERVER_URL || 'http://localhost:4000') + 'api')}/product-variant/product/${productId}/grouped`);
       
       if (response.ok) {
         const data = await response.json();
@@ -61,7 +61,7 @@ const ProductVariantManager = ({ productId, productName }) => {
 
   const fetchAvailableVariations = async () => {
     try {
-      const response = await fetch(`http://localhost:4000/api/product-variant/product/${productId}/available`);
+      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL || (import.meta.env.VITE_API_BASE_URL || (import.meta.env.VITE_SERVER_URL || 'http://localhost:4000') + 'api')}/product-variant/product/${productId}/available`);
       
       if (response.ok) {
         const data = await response.json();
@@ -78,7 +78,7 @@ const ProductVariantManager = ({ productId, productName }) => {
 
   const fetchLinkedVariations = async () => {
     try {
-      const response = await fetch(`http://localhost:4000/api/product-variant/product/${productId}/linked`);
+      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL || (import.meta.env.VITE_API_BASE_URL || (import.meta.env.VITE_SERVER_URL || 'http://localhost:4000') + 'api')}/product-variant/product/${productId}/linked`);
       
       if (response.ok) {
         const data = await response.json();
@@ -121,7 +121,7 @@ const ProductVariantManager = ({ productId, productName }) => {
       setLoading(true);
       setErrorMessage('');
       
-      const response = await fetch(`http://localhost:4000/api/product-variant/product/${productId}`, {
+      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL || (import.meta.env.VITE_API_BASE_URL || (import.meta.env.VITE_SERVER_URL || 'http://localhost:4000') + 'api')}/product-variant/product/${productId}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -187,7 +187,7 @@ const ProductVariantManager = ({ productId, productName }) => {
 
       // Create variants one by one
       const promises = values.map(value => 
-        fetch(`http://localhost:4000/api/product-variant/product/${productId}`, {
+        fetch(`${import.meta.env.VITE_API_BASE_URL || (import.meta.env.VITE_API_BASE_URL || (import.meta.env.VITE_SERVER_URL || 'http://localhost:4000') + 'api')}/product-variant/product/${productId}`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
@@ -237,7 +237,7 @@ const ProductVariantManager = ({ productId, productName }) => {
       setLoading(true);
       setErrorMessage('');
       
-      const response = await fetch(`http://localhost:4000/api/product-variant/${editingVariant.id}`, {
+      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL || (import.meta.env.VITE_API_BASE_URL || (import.meta.env.VITE_SERVER_URL || 'http://localhost:4000') + 'api')}/product-variant/${editingVariant.id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json'
@@ -274,7 +274,7 @@ const ProductVariantManager = ({ productId, productName }) => {
 
     try {
       setLoading(true);
-      const response = await fetch(`http://localhost:4000/api/product-variant/${variantId}`, {
+      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL || (import.meta.env.VITE_API_BASE_URL || (import.meta.env.VITE_SERVER_URL || 'http://localhost:4000') + 'api')}/product-variant/${variantId}`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json'
@@ -335,7 +335,7 @@ const ProductVariantManager = ({ productId, productName }) => {
       setLoading(true);
       setErrorMessage('');
       
-      const response = await fetch(`http://localhost:4000/api/product-variant/product/${productId}`, {
+      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL || (import.meta.env.VITE_API_BASE_URL || (import.meta.env.VITE_SERVER_URL || 'http://localhost:4000') + 'api')}/product-variant/product/${productId}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

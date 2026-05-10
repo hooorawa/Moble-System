@@ -90,7 +90,7 @@ const EditProfile = () => {
       }
 
       const response = await axios.post(
-        'http://localhost:4000/api/customer/update-profile',
+        (import.meta.env.VITE_API_BASE_URL || (import.meta.env.VITE_SERVER_URL || 'http://localhost:4000') + 'api') + 'customer/update-profile',
         formDataToSend,
         {
           headers: {

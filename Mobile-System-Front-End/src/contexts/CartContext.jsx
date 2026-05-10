@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useReducer, useEffect, useState } from 'react';
 
 // Get API base URL from environment or fallback
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:4000/api';
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || (import.meta.env.VITE_API_BASE_URL || (import.meta.env.VITE_API_BASE_URL || (import.meta.env.VITE_SERVER_URL || 'http://localhost:4000') + 'api'));
 
 // Cart Context
 const CartContext = createContext();

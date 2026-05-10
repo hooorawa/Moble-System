@@ -25,7 +25,7 @@ const AddressBook = () => {
     try {
       setLoading(true);
       
-      const response = await fetch('http://localhost:4000/api/address/', {
+      const response = await fetch((import.meta.env.VITE_API_BASE_URL || (import.meta.env.VITE_SERVER_URL || 'http://localhost:4000') + 'api') + 'address/', {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json'
@@ -86,12 +86,12 @@ const AddressBook = () => {
         ...formData
       };
       
-      let url = 'http://localhost:4000/api/address/add';
+      let url = (import.meta.env.VITE_API_BASE_URL || (import.meta.env.VITE_SERVER_URL || 'http://localhost:4000') + 'api') + 'address/add';
       let method = 'POST';
       
       // If editing, use update endpoint
       if (editingAddress) {
-        url = `http://localhost:4000/api/address/update/${editingAddress._id}`;
+        url = `${import.meta.env.VITE_API_BASE_URL || (import.meta.env.VITE_API_BASE_URL || (import.meta.env.VITE_SERVER_URL || 'http://localhost:4000') + 'api')}/address/update/${editingAddress._id}`;
         method = 'PUT';
       }
       
@@ -182,7 +182,7 @@ const AddressBook = () => {
 
     try {
       setLoading(true);
-      const response = await fetch(`http://localhost:4000/api/address/delete/${addressId}`, {
+      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL || (import.meta.env.VITE_API_BASE_URL || (import.meta.env.VITE_SERVER_URL || 'http://localhost:4000') + 'api')}/address/delete/${addressId}`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json'
