@@ -6,9 +6,9 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { setCustomerSession, setAdminSession } from "../../utils/authSession";
 
-import { SERVER_URL } from '../../config';
+import { API_BASE_URL } from '../../config';
 
-const url = SERVER_URL;
+const url = API_BASE_URL;
 
 const Login = ({ SetShowLogin, initialMode = 'signin' }) => {
   const [CurrState, setCurrState] = useState(initialMode === 'signup' ? "Sign Up" : "Login"); // Sign Up or Login
@@ -32,9 +32,9 @@ const Login = ({ SetShowLogin, initialMode = 'signin' }) => {
 
     let newUrl = url.endsWith('/') ? url.slice(0, -1) : url;
     if (CurrState === "Login") {
-      newUrl += "/api/customer/login";
+      newUrl += "/customer/login";
     } else {
-      newUrl += "/api/customer/register";
+      newUrl += "/customer/register";
     }
 
     setAnimateBtn(true);
