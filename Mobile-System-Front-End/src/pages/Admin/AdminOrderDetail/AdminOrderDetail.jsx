@@ -1,3 +1,4 @@
+import { API_BASE_URL, SERVER_URL } from './../../../config';
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import './AdminOrderDetail.css';
@@ -148,7 +149,7 @@ const AdminOrderDetail = () => {
       setError(null);
       
       // Use admin-specific order endpoint
-      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/admin/order/${orderId}`, {
+      const response = await fetch(`${API_BASE_URL}/admin/order/${orderId}`, {
         credentials: 'include'
       });
 
@@ -535,7 +536,7 @@ const AdminOrderDetail = () => {
                   : imageUrl?.startsWith('http://') || imageUrl?.startsWith('https://')
                   ? imageUrl
                   : imageUrl 
-                  ? `${import.meta.env.VITE_SERVER_URL || (import.meta.env.VITE_SERVER_URL || 'http://localhost:4000')}${imageUrl}` 
+                  ? `${SERVER_URL}${imageUrl}` 
                   : null;
                 
                 return (

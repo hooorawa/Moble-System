@@ -1,3 +1,4 @@
+import { API_BASE_URL } from './../../../config';
 import React, { useState, useEffect } from 'react';
 import allIcon from '../../../Assets/all.png';
 import inStockIcon from '../../../Assets/in-stock.png';
@@ -37,7 +38,7 @@ const AdminStock = () => {
   // Fetch categories
   const fetchCategories = async () => {
     try {
-      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/category/`, {
+      const response = await fetch(`${API_BASE_URL}/category/`, {
         credentials: 'include'
       });
 
@@ -60,7 +61,7 @@ const AdminStock = () => {
   // Fetch brands
   const fetchBrands = async () => {
     try {
-      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/brand/`, {
+      const response = await fetch(`${API_BASE_URL}/brand/`, {
         credentials: 'include'
       });
 
@@ -93,7 +94,7 @@ const AdminStock = () => {
       if (filters.lowStock) queryParams.append('lowStock', 'true');
       if (filters.outOfStock) queryParams.append('outOfStock', 'true');
 
-      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/stock?${queryParams}`, {
+      const response = await fetch(`${API_BASE_URL}/stock?${queryParams}`, {
         credentials: 'include'
       });
 
@@ -122,7 +123,7 @@ const AdminStock = () => {
   // Fetch stock statistics
   const fetchStatistics = async () => {
     try {
-      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/stock/statistics`, {
+      const response = await fetch(`${API_BASE_URL}/stock/statistics`, {
         credentials: 'include'
       });
 
@@ -155,7 +156,7 @@ const AdminStock = () => {
       setLoading(true);
       setErrorMessage('');
 
-      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/stock/${selectedItem._id}`, {
+      const response = await fetch(`${API_BASE_URL}/stock/${selectedItem._id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json'

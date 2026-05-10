@@ -1,3 +1,4 @@
+import { API_BASE_URL } from './../../../../config';
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
@@ -90,7 +91,7 @@ const EditProfile = () => {
       }
 
       const response = await axios.post(
-        (import.meta.env.VITE_API_BASE_URL || (import.meta.env.VITE_SERVER_URL || 'http://localhost:4000') + 'api') + 'customer/update-profile',
+        API_BASE_URL + 'api') + 'customer/update-profile',
         formDataToSend,
         {
           headers: {

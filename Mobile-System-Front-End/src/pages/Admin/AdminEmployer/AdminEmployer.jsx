@@ -1,3 +1,4 @@
+import { API_BASE_URL } from './../../../config';
 import React, { useState, useEffect } from 'react';
 import './AdminEmployer.css';
 import employer_icon from '../../../Assets/employee.png';
@@ -77,7 +78,7 @@ const AdminEmployer = () => {
   const fetchEmployers = async () => {
     try {
       setLoading(true);
-      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/employer/`, {
+      const response = await fetch(`${API_BASE_URL}/employer/`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json'
@@ -115,7 +116,7 @@ const AdminEmployer = () => {
   const fetchRoles = async () => {
     try {
       console.log('Fetching roles...');
-      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/role/`, {
+      const response = await fetch(`${API_BASE_URL}/role/`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json'
@@ -152,7 +153,7 @@ const AdminEmployer = () => {
       setLoading(true);
       setErrorMessage('');
       
-      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/employer/add`, {
+      const response = await fetch(`${API_BASE_URL}/employer/add`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -197,7 +198,7 @@ const AdminEmployer = () => {
 
     try {
       setLoading(true);
-      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/employer/delete/${employerId}`, {
+      const response = await fetch(`${API_BASE_URL}/employer/delete/${employerId}`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json'
@@ -246,7 +247,7 @@ const AdminEmployer = () => {
         updateData.password = updateEmployerPassword.trim();
       }
 
-      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/employer/update/${editingEmployer._id}`, {
+      const response = await fetch(`${API_BASE_URL}/employer/update/${editingEmployer._id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json'
@@ -326,7 +327,7 @@ const AdminEmployer = () => {
 
     try {
       setLoading(true);
-      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/role/add`, {
+      const response = await fetch(`${API_BASE_URL}/role/add`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -401,7 +402,7 @@ const AdminEmployer = () => {
           return;
         }
 
-        const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/role/delete/${role._id}`, {
+        const response = await fetch(`${API_BASE_URL}/role/delete/${role._id}`, {
           method: 'DELETE',
           headers: {
             'Content-Type': 'application/json'
@@ -467,7 +468,7 @@ const AdminEmployer = () => {
       setLoading(true);
       setErrorMessage('');
       
-      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/employer/permissions/${selectedEmployer._id}`, {
+      const response = await fetch(`${API_BASE_URL}/employer/permissions/${selectedEmployer._id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json'

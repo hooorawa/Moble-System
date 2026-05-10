@@ -1,3 +1,4 @@
+import { API_BASE_URL } from './../../../config';
 import React, { useMemo, useState, useEffect } from "react";
 import "./AdminAttendance.css";
 
@@ -25,7 +26,7 @@ const AdminAttendance = () => {
     try {
       setLoading(true);
       setEmployeeError("");
-      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/employer/`, {
+      const response = await fetch(`${API_BASE_URL}/employer/`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json"

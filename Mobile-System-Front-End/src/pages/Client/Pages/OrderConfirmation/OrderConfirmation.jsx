@@ -1,3 +1,4 @@
+import { SERVER_URL } from './../../../../config';
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useCart } from '../../../../contexts/CartContext';
@@ -194,7 +195,7 @@ const OrderConfirmation = () => {
                     : imageUrl?.startsWith('http://') || imageUrl?.startsWith('https://')
                     ? imageUrl
                     : imageUrl 
-                    ? `${import.meta.env.VITE_SERVER_URL || (import.meta.env.VITE_SERVER_URL || 'http://localhost:4000')}${imageUrl}` 
+                    ? `${SERVER_URL}${imageUrl}` 
                     : '/placeholder-product.png';
                   
                   return (

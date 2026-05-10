@@ -1,3 +1,4 @@
+import { API_BASE_URL } from './../../config';
 import React, { useState, useEffect } from 'react';
 import './ProductVariantSelector.css';
 
@@ -28,7 +29,7 @@ const ProductVariantSelector = ({ productId, productPrice, onVariantChange, allo
       setLoading(true);
       setError(null);
       
-      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL || (import.meta.env.VITE_API_BASE_URL || (import.meta.env.VITE_SERVER_URL || 'http://localhost:4000') + 'api')}/product-variant/product/${productId}/grouped`);
+      const response = await fetch(`${API_BASE_URL}/product-variant/product/${productId}/grouped`);
       
       if (response.ok) {
         const data = await response.json();
@@ -87,7 +88,7 @@ const ProductVariantSelector = ({ productId, productPrice, onVariantChange, allo
 
   const fetchAvailableVariations = async () => {
     try {
-      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL || (import.meta.env.VITE_API_BASE_URL || (import.meta.env.VITE_SERVER_URL || 'http://localhost:4000') + 'api')}/product-variant/product/${productId}/available`);
+      const response = await fetch(`${API_BASE_URL}/product-variant/product/${productId}/available`);
       
       if (response.ok) {
         const data = await response.json();
@@ -170,7 +171,7 @@ const ProductVariantSelector = ({ productId, productPrice, onVariantChange, allo
       setLoading(true);
       setError(null);
       
-      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL || (import.meta.env.VITE_API_BASE_URL || (import.meta.env.VITE_SERVER_URL || 'http://localhost:4000') + 'api')}/product-variant/product/${productId}`, {
+      const response = await fetch(`${API_BASE_URL}/product-variant/product/${productId}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

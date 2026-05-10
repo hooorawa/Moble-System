@@ -1,3 +1,4 @@
+import { SERVER_URL } from './../../../../config';
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './Profile.css';
@@ -70,7 +71,7 @@ const Profile = () => {
             <div className="profile-avatar">
               {user.profilePicture ? (
                 <img 
-                  src={`${import.meta.env.VITE_SERVER_URL || (import.meta.env.VITE_SERVER_URL || 'http://localhost:4000')}${user.profilePicture}`} 
+                  src={`${SERVER_URL}${user.profilePicture}`} 
                   alt="Profile" 
                   className="profile-image"
                 />

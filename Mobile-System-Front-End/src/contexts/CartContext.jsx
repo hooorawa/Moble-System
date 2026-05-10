@@ -1,7 +1,8 @@
+import { API_BASE_URL } from './../config';
 import React, { createContext, useContext, useReducer, useEffect, useState } from 'react';
 
 // Get API base URL from environment or fallback
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || (import.meta.env.VITE_API_BASE_URL || (import.meta.env.VITE_API_BASE_URL || (import.meta.env.VITE_SERVER_URL || 'http://localhost:4000') + 'api'));
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || API_BASE_URL + 'api'));
 
 // Cart Context
 const CartContext = createContext();
@@ -237,7 +238,7 @@ export const CartProvider = ({ children }) => {
     // Delay database sync to not block UI
     const syncTimeout = setTimeout(async () => {
       try {
-        const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/cart/${userId}`, {
+        const response = await fetch(`${API_BASE_URL}/cart/${userId}`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',

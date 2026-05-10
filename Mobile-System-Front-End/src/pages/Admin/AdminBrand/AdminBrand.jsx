@@ -1,3 +1,4 @@
+import { API_BASE_URL } from './../../../config';
 import React, { useState, useEffect } from 'react';
 import './AdminBrand.css';
 import brand_icon from '../../../Assets/brand.png';
@@ -31,7 +32,7 @@ const AdminBrand = () => {
   const fetchBrands = async () => {
     try {
       setLoading(true);
-      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/brand/`, {
+      const response = await fetch(`${API_BASE_URL}/brand/`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json'
@@ -68,7 +69,7 @@ const AdminBrand = () => {
 
   const fetchCategories = async () => {
     try {
-      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/category/`, {
+      const response = await fetch(`${API_BASE_URL}/category/`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json'

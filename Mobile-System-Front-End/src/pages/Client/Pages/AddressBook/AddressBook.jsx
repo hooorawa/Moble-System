@@ -1,3 +1,4 @@
+import { API_BASE_URL } from './../../../../config';
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './AddressBook.css';
@@ -25,7 +26,7 @@ const AddressBook = () => {
     try {
       setLoading(true);
       
-      const response = await fetch((import.meta.env.VITE_API_BASE_URL || (import.meta.env.VITE_SERVER_URL || 'http://localhost:4000') + 'api') + 'address/', {
+      const response = await fetch(API_BASE_URL + 'api') + 'address/', {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json'
@@ -86,12 +87,12 @@ const AddressBook = () => {
         ...formData
       };
       
-      let url = (import.meta.env.VITE_API_BASE_URL || (import.meta.env.VITE_SERVER_URL || 'http://localhost:4000') + 'api') + 'address/add';
+      let url = API_BASE_URL + 'api') + 'address/add';
       let method = 'POST';
       
       // If editing, use update endpoint
       if (editingAddress) {
-        url = `${import.meta.env.VITE_API_BASE_URL || (import.meta.env.VITE_API_BASE_URL || (import.meta.env.VITE_SERVER_URL || 'http://localhost:4000') + 'api')}/address/update/${editingAddress._id}`;
+        url = `${API_BASE_URL}/address/update/${editingAddress._id}`;
         method = 'PUT';
       }
       
@@ -182,7 +183,7 @@ const AddressBook = () => {
 
     try {
       setLoading(true);
-      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL || (import.meta.env.VITE_API_BASE_URL || (import.meta.env.VITE_SERVER_URL || 'http://localhost:4000') + 'api')}/address/delete/${addressId}`, {
+      const response = await fetch(`${API_BASE_URL}/address/delete/${addressId}`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json'

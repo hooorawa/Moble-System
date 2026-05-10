@@ -37,6 +37,12 @@ const PORT = process.env.PORT || 4000;
 app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ limit: '50mb', extended: true }));
 
+// Request logging middleware
+app.use((req, res, next) => {
+  console.log(`[${new Date().toISOString()}] ${req.method} ${req.path}`);
+  next();
+});
+
 // CORS Configuration
 const corsOrigins = process.env.FRONTEND_URLS 
   ? process.env.FRONTEND_URLS.split(',').map(url => url.trim())

@@ -30,7 +30,7 @@ const Login = ({ SetShowLogin, initialMode = 'signin' }) => {
   const onLogin = async (event) => {
     event.preventDefault();
 
-    let newUrl = url;
+    let newUrl = url.endsWith('/') ? url.slice(0, -1) : url;
     if (CurrState === "Login") {
       newUrl += "/api/customer/login";
     } else {
@@ -67,8 +67,10 @@ const Login = ({ SetShowLogin, initialMode = 'signin' }) => {
         alert(response.data.message);
       }
     } catch (error) {
-      console.error(error);
-      alert(error.response?.data?.message || "Server error. Please try again.");
+      console.error("Login error:", error);
+      const errorMsg = error.response?.data?.message || error.message || "Server error";
+      const failedUrl = error.config?.url || newUrl;
+      alert(`${errorMsg}\n\nFailed to reach: ${failedUrl}\n\nPlease check if your Backend URL is correct in Netlify settings.`);
     }
   };
 
