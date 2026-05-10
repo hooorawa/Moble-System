@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import './AdminVariation.css';
 import variation_icon from '../../../Assets/variant.png';
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || API_BASE_URL + 'api'));
+
 
 const AdminVariation = () => {
   const [variations, setVariations] = useState([]);

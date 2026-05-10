@@ -2,7 +2,7 @@ import { API_BASE_URL } from './../config';
 import React, { createContext, useContext, useReducer, useEffect, useState } from 'react';
 
 // Get API base URL from environment or fallback
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || API_BASE_URL + 'api'));
+
 
 // Cart Context
 const CartContext = createContext();
