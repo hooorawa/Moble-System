@@ -6,7 +6,9 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { setCustomerSession, setAdminSession } from "../../utils/authSession";
 
-const url = "http://localhost:4000";
+import { SERVER_URL } from '../../config';
+
+const url = SERVER_URL;
 
 const Login = ({ SetShowLogin, initialMode = 'signin' }) => {
   const [CurrState, setCurrState] = useState(initialMode === 'signup' ? "Sign Up" : "Login"); // Sign Up or Login

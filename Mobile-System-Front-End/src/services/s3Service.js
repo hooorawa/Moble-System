@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_BASE_URL = 'http://localhost:4000/api';
+import { API_BASE_URL } from '../config';
 
 class S3Service {
   // Get S3 configuration
